@@ -13,6 +13,9 @@ export default defineConfig({
     resolve:{
         alias:{
             '@': '/resources/js',
+            '@images': '/resources/assets/images',
+            '@fonts': '/resources/assets/fonts',
+            '@vendor': '/vendor'
         }
     }
 });

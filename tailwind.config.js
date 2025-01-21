@@ -13,8 +13,16 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                'Poppins-Regular':['Poppins-Regular'],
+                'Poppins-Medium':['Poppins-Medium'],
+                'Poppins-SemiBold':['Poppins-SemiBold'],
+                'Poppins-Bold':['Poppins-Bold'],
             },
+            backgroundImage:{
+                loginGradient:"linear-gradient(180deg, rgba(46,80,119,1) 0%, rgba(25,42,60,1) 100%)",
+            }
         },
+
     },
     plugins: [],
 };

@@ -1,5 +1,10 @@
+import HomeLayout from "../../Layout/HomeLayout"
+
 export default function Home(){
+  
   return(<>
-    <h1 className="text-9xl">Helllo User</h1>
+    <HomeLayout>
+      <div className="text-[50px] ">Homepage</div>
+    </HomeLayout>
   </>)
 }

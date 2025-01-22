@@ -5,32 +5,39 @@ import navDashboardLearnIcon from '@images/dashboard/navDashboardLearnIcon.svg'
 import navDashboardMusicIcon from '@images/dashboard/navDashboardMusicIcon.svg'
 import navDashboardLogoutIcon from '@images/dashboard/navDashboardLogoutIcon.svg'
 import navDashboardLogo from '@images/dashboard/navDashboardLogo.svg'
-import { useForm } from '@inertiajs/react'
+import { Link, useForm } from '@inertiajs/react'
 import { useRoute } from '@vendor/tightenco/ziggy'
 
 export default function DashboardLayout({ children }) {
+  
   const route = useRoute()
   return (
     <>
       <main className="min-h-[100vh] flex bg-[#F6F4F0]">
         <header className="w-[160px] flex flex-col items-center justify-between py-[50px]">
           <div className="flex flex-col gap-[50px]">
-            <button className='mb-[42px]' type='button'>
+            <Link href={route('home')}>
+            <button className='w-fit mb-[42px]' type='button'>
               <img src={navDashboardLogo} alt="" />
             </button>
-            <button className='' type='button'>
+            </Link>
+            <Link href={route('home')}>
+            <button className='w-fit ' type='button'>
               <img src={navDashboardHomeIcon} alt="" />
             </button>
-            <button className='' type='button'>
+            </Link>
+            <Link href={route('learn.show')}>
+            <button className='w-fit ' type='button'>
               <img src={navDashboardLearnIcon} alt="" />
             </button>
-            <button className='' type='button'>
+            </Link>
+            <button className='w-fit ' type='button'>
               <img src={navDashboardExerciseIcon} alt="" />
             </button>
-            <button className='' type='button'>
+            <button className='w-fit ' type='button'>
               <img src={navDashboardMusicIcon} alt="" />
             </button>
-            <button className='' type='button'>
+            <button className='w-fit ' type='button'>
               <img src={navDashboardAccountIcon} alt="" />
             </button>
 

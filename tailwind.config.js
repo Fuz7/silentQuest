@@ -20,6 +20,7 @@ export default {
             },
             backgroundImage:{
                 loginGradient:"linear-gradient(180deg, rgba(46,80,119,1) 0%, rgba(25,42,60,1) 100%)",
+                homeGradient:'linear-gradient(90deg, #F6F4F0 0%, #DADADA 100%)',
             }
         },
 

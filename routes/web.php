@@ -1,6 +1,8 @@
 <?php
 
+use App\Helpers\DateHelper;
 use App\Http\Controllers\AuthController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +25,17 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
   Route::get('/dashboard', function () {
       return inertia('Dashboard/Dashboard', [
-          'userId' => Auth::user() // Get the authenticated user ID
+          'auth' => Auth::user(),
+          'date' => [ 'dayAbbreviation' => DateHelper::getCurrentDayAbbrevation(),
+                      'monthName' => DateHelper::getCurrMonthName(),
+                      'weekdays' => DateHelper::getCurrentWeekdays()],
       ]);
   })->name('home');
+  Route::get('/learn', function () {
+      return inertia('Dashboard/Learn/Learn', [
+          'auth' => Auth::user() ,
+      ]);
+  })->name('learn.show');
+
     
 });

@@ -31,11 +31,10 @@ Route::middleware(['auth'])->group(function () {
                       'weekdays' => DateHelper::getCurrentWeekdays()],
       ]);
   })->name('home');
-  Route::get('/learn', function () {
-      return inertia('Dashboard/Learn/Learn', [
-          'auth' => Auth::user() ,
-      ]);
-  })->name('learn.show');
+ 
+  Route::inertia('/learn','Dashboard/Learn/Learn')->name('learn.show');
+  Route::inertia('/meditate','Dashboard/Meditate/Meditate')->name('meditate.show');
+  Route::inertia('/breathing','Dashboard/Breathing/Breathing')->name('breathing.show');
 
     
 });

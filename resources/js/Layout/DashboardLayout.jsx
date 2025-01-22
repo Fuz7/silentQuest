@@ -16,8 +16,9 @@ import { useMemo } from "react";
 
 export default function DashboardLayout({ children, type }) {
   const route = useRoute();
+
   const sad = useMemo(function(){
-    console.log()
+    console.log("sad")
   },[type])
   return (
     <>
@@ -28,14 +29,14 @@ export default function DashboardLayout({ children, type }) {
           </div>
           <LogoutButton route={route} />
         </header>
-        <section className="flex">{children}</section>
+        <section className="flex ">{children}</section>
       </main>
     </>
   );
 }
 
 function DashboardNavButtons({ route, currentType }) {
-  const navRouteArray = ["home", "learn.show", "home", "home", "home"];
+  const navRouteArray = ["home", "learn.show", "meditate.show", "breathing.show", "home"];
   const navImgSrcArray = [
     {
       default: navDashboardHomeIcon,
@@ -58,7 +59,7 @@ function DashboardNavButtons({ route, currentType }) {
       active: navDashboardWhiteAccountIcon
     },
   ];
-  const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", "exercise", "music", "account"];
+  const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", ["Dashboard/Meditate/Meditate",'Dashboard/Breathing/Breathing'], "music", "account"];
 
   return (
     <>
@@ -87,19 +88,26 @@ function DashboardNavButtons({ route, currentType }) {
 }
 
 function NavButton({ route, routeName, imgSrc, buttonName, currentType }) {
+
+  function find(){
+
+  }
+
   return (
     <>
       <Link
         className={`w-[45px] aspect-square flex justify-center items-center mr-[10px]
           rounded-[10px]
-      dashboardLink relative ${buttonName === currentType ? 'bg-[#2E5077]' : ''}`}
+      dashboardLink relative ${(buttonName) === currentType ? 'bg-[#2E5077]' : ''}
+      ${Array.isArray(buttonName) && buttonName.includes(currentType) && 'bg-[#2E5077]'}`}
         href={route(routeName)}
       >
 
         <span className="absolute top-[8px] left-[-10px] bg-[#2E5077] w-[3px] hidden rounded-[20px] h-[30px]"></span>
         <button className="w-fit " type="button">
 
-          {buttonName === currentType ?
+          {buttonName === currentType || Array.isArray(buttonName) && buttonName.includes(currentType)
+          ?
           (
           <img src={imgSrc.active} alt="" />
           ) :

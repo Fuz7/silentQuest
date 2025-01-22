@@ -7,6 +7,7 @@ export default function Dashboard({ auth, date }) {
       <div className="flex flex-col w-[1000px]">
         <Header auth={auth} />
         <Date date={date} />
+      <h3 className='font-Poppins-Medium text-[25px] mt-[25px] ml-[40px]'>Some Insights</h3>
       </div>
     </section>
   </>)

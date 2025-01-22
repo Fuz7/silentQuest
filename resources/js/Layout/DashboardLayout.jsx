@@ -12,9 +12,13 @@ import navDashboardLogoutIcon from "@images/dashboard/layout/navDashboardLogoutI
 import navDashboardLogo from "@images/dashboard/layout/navDashboardLogo.svg";
 import { Link, useForm } from "@inertiajs/react";
 import { useRoute } from "@vendor/tightenco/ziggy";
+import { useMemo } from "react";
 
 export default function DashboardLayout({ children, type }) {
   const route = useRoute();
+  const sad = useMemo(function(){
+    console.log()
+  },[type])
   return (
     <>
       <main className="min-h-[100vh] flex bg-[#F6F4F0]">
@@ -54,7 +58,7 @@ function DashboardNavButtons({ route, currentType }) {
       active: navDashboardWhiteAccountIcon
     },
   ];
-  const buttonNamesArray = ["dashboard", "learn", "exercise", "music", "account"];
+  const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", "exercise", "music", "account"];
 
   return (
     <>

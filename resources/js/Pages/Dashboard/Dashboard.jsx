@@ -16,9 +16,7 @@ import { useRoute } from "@vendor/tightenco/ziggy";
 
 export default function Dashboard({ auth, date }) {
   const route = useRoute();
-  console.log(date)
   return (<>
-    <DashboardLayout type={'dashboard'}>
          <div className="flex flex-col w-[1000px]">
           <Header auth={auth} />
           <Date date={date} />
@@ -32,7 +30,6 @@ export default function Dashboard({ auth, date }) {
             <KnowMoreCard />
           </div>
         </div>
-    </DashboardLayout>
   </>)
 }
 

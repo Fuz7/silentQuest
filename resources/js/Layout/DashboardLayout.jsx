@@ -29,7 +29,7 @@ export default function DashboardLayout({ children, type }) {
           </div>
           <LogoutButton route={route} />
         </header>
-        <section className="flex ">{children}</section>
+        <section className="flex relative">{children}</section>
       </main>
     </>
   );

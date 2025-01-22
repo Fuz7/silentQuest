@@ -1,19 +1,23 @@
 import dashboardIcon from '@images/dashboard/dashboardIcon.svg'
 import DashboardLayout from '../../Layout/DashboardLayout'
-
+import dashboardExperienceBackground from
+  '@images/dashboard/dashboardExperienceBackground.jpg'
 export default function Dashboard({ auth, date }) {
-  
+
   console.log(date)
   return (<>
-  <DashboardLayout>
-    <section className="flex">
-      <div className="flex flex-col w-[1000px]">
-        <Header auth={auth} />
-        <Date date={date} />
-      <h3 className='font-Poppins-Medium text-[25px] mt-[25px] ml-[40px]'>Some Insights</h3>
-      </div>
-    </section>
-  </DashboardLayout>
+    <DashboardLayout>
+      <section className="flex">
+        <div className="flex flex-col w-[1000px]">
+          <Header auth={auth} />
+          <Date date={date} />
+          <h3 className='font-Poppins-Medium text-[25px] mt-[25px] ml-[40px]'>Some Insights</h3>
+          <div className='flex min-w-full mt-[40px] ml-[40px]'>
+            <ExperienceCard />
+          </div>
+        </div>
+      </section>
+    </DashboardLayout>
   </>)
 }
 
@@ -50,8 +54,8 @@ function Date({ date }) {
                 {day}
               </div>) :
               (
-                <div key={index+"day"} 
-                className='w-[50px] aspect-square relative'>
+                <div key={index + "day"}
+                  className='w-[50px] aspect-square relative'>
                   <span className='absolute top-0 w-full h-[100px] bg-[#4DA1A9] rounded-[10px] py-[14px]
                     text-white font-Poppins-Medium
                     flex items-end justify-center'>{date.dayAbbreviation}</span>
@@ -67,4 +71,25 @@ function Date({ date }) {
       </div>
     </div>
   </>)
+}
+
+function ExperienceCard() {
+  return (
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${dashboardExperienceBackground})`
+        }}
+        className={`w-[320px] h-[170px] pl-[30px] pt-[30px] flex flex-col
+            `}>
+        <h4 className='font-Poppins-Medium text-[30px] text-white leading-none'>
+          Mindful Seeker</h4>
+        <div className='mt-[55px] flex  items-center pr-[20px]'>
+          <h5 className='font-Poppins-Regular text-[20px] text-white leading-none'>
+            Experience Pts:</h5>
+          <p className='font-Poppins-SemiBold text-white text-[24px] ml-auto leading-none'>1900exp</p>
+        </div>
+      </div>
+    </>
+  )
 }

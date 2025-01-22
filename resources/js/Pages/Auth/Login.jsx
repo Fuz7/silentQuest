@@ -4,7 +4,7 @@ import loginPasswordIcon from '@images/auth/loginPasswordIcon.svg'
 import closedLoginPasswordIcon from '@images/auth/closedLoginPasswordIcon.svg'
 import loginErrorIcon from '@images/auth/loginErrorIcon.svg'
 import { Link, useForm } from "@inertiajs/react"
-import { useRoute } from '@vendor/tightenco/ziggy'
+import { useRoute } from '@vendor/tightenco/ziggy' // Turn it into relative after your done to deploy it
 import { useState } from "react"
 export default function Login() {
   const route = useRoute()

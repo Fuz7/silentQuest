@@ -104,7 +104,7 @@ function NavButton({ route, routeName, imgSrc, buttonName, currentType }) {
       >
 
         <span className="absolute top-[8px] left-[-10px] bg-[#2E5077] w-[3px] hidden rounded-[20px] h-[30px]"></span>
-        <button className="w-fit " type="button">
+        <div className="w-fit ">
 
           {buttonName === currentType || Array.isArray(buttonName) && buttonName.includes(currentType)
           ?
@@ -114,7 +114,7 @@ function NavButton({ route, routeName, imgSrc, buttonName, currentType }) {
           (
           <img src={imgSrc.default} alt="" />
           )}
-        </button>
+        </div>
       </Link>
     </>
   );

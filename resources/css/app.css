@@ -18,3 +18,7 @@
   font-family: 'Poppins-Bold';
   src: url('@fonts/Poppins-Bold.ttf');
 }
+
+.dashboardLink:hover > span{
+  display: block;
+}

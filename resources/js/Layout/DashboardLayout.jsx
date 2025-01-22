@@ -8,47 +8,17 @@ import navDashboardLogo from '@images/dashboard/navDashboardLogo.svg'
 import { Link, useForm } from '@inertiajs/react'
 import { useRoute } from '@vendor/tightenco/ziggy'
 
-export default function DashboardLayout({ children }) {
-  
+export default function DashboardLayout({ children, type }) {
+
   const route = useRoute()
   return (
     <>
       <main className="min-h-[100vh] flex bg-[#F6F4F0]">
         <header className="w-[160px] flex flex-col items-center justify-between py-[50px]">
           <div className="flex flex-col gap-[50px]">
-            <Link className=' flex justify-center items-center' href={route('home')}>
-            <button className='w-fit mb-[42px]' type='button'>
-              <img src={navDashboardLogo} alt="" />
-            </button>
-            </Link>
-            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
-            <button className='w-fit ' type='button'>
-              <img src={navDashboardHomeIcon} alt="" />
-            </button>
-            </Link>
-            <Link className='w-[45px] aspect-square flex justify-center items-cente mr-[10px]r' href={route('learn.show')}>
-            <button className='w-fit ' type='button'>
-              <img src={navDashboardLearnIcon} alt="" />
-            </button>
-            </Link>
-            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
-            <button className='w-fit ' type='button'>
-              <img src={navDashboardExerciseIcon} alt="" />
-            </button>
-            </Link>
-            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
-            <button className='w-fit ' type='button'>
-              <img src={navDashboardMusicIcon} alt="" />
-            </button>
-            </Link>
-            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
-            <button className='w-fit ' type='button'>
-              <img src={navDashboardAccountIcon} alt="" />
-            </button>
-            </Link>
-
+            <DashboardNavButtons route={route} type={type} />
           </div>
-          <LogoutButton route={route}/>
+          <LogoutButton route={route} />
         </header>
         <section>
           {children}
@@ -58,8 +28,55 @@ export default function DashboardLayout({ children }) {
   )
 }
 
-function LogoutButton({route}) {
-  const {post} = useForm()
+function DashboardNavButtons({ route, type }) {
+  return (
+    <>
+      <Link className=' flex justify-center items-center' href={route('home')}>
+        <button className='w-fit mb-[42px]' type='button'>
+          <img src={navDashboardLogo} alt="" />
+        </button>
+      </Link>
+      <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]
+      dashboardLink relative' href={route('home')}>
+        <span className='absolute top-[8px] left-[-10px] bg-[#2E5077] w-[3px] hidden rounded-[20px] h-[30px]'></span>
+        <button className='w-fit ' type='button'>
+          <img src={navDashboardHomeIcon} alt="" />
+        </button>
+      </Link>
+      <Link className='w-[45px] aspect-square flex justify-center items-cente mr-[10px] 
+      dashboardLink relative' href={route('learn.show')}>
+        <span className='absolute top-[8px] left-[-10px] bg-[#2E5077] w-[3px] hidden rounded-[20px] h-[30px]'></span>
+        <button className='w-fit ' type='button'>
+          <img src={navDashboardLearnIcon} alt="" />
+        </button>
+      </Link>
+      <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]
+      dashboardLink relative' href={route('home')}>
+        <span className='absolute top-[8px] left-[-10px] bg-[#2E5077] w-[3px] hidden rounded-[20px] h-[30px]'></span>
+        <button className='w-fit ' type='button'>
+          <img src={navDashboardExerciseIcon} alt="" />
+        </button>
+      </Link>
+      <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]
+      dashboardLink relative' href={route('home')}>
+        <span className='absolute top-[8px] left-[-10px] bg-[#2E5077] w-[3px] hidden rounded-[20px] h-[30px]'></span>
+        <button className='w-fit ' type='button'>
+          <img src={navDashboardMusicIcon} alt="" />
+        </button>
+      </Link>
+      <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]
+      dashboardLink relative' href={route('home')}>
+        <span className='absolute top-[8px] left-[-10px] bg-[#2E5077] w-[3px] hidden rounded-[20px] h-[30px]'></span>
+        <button className='w-fit ' type='button'>
+          <img src={navDashboardAccountIcon} alt="" />
+        </button>
+      </Link>
+    </>
+  )
+}
+
+function LogoutButton({ route }) {
+  const { post } = useForm()
   const submit = (e) => {
     e.preventDefault()
     post(route('auth.logout'))

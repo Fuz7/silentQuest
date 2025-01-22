@@ -1,8 +1,11 @@
 import dashboardIcon from '@images/dashboard/dashboardIcon.svg'
+import DashboardLayout from '../../Layout/DashboardLayout'
 
 export default function Dashboard({ auth, date }) {
+  
   console.log(date)
   return (<>
+  <DashboardLayout>
     <section className="flex">
       <div className="flex flex-col w-[1000px]">
         <Header auth={auth} />
@@ -10,6 +13,7 @@ export default function Dashboard({ auth, date }) {
       <h3 className='font-Poppins-Medium text-[25px] mt-[25px] ml-[40px]'>Some Insights</h3>
       </div>
     </section>
+  </DashboardLayout>
   </>)
 }
 
@@ -46,14 +50,15 @@ function Date({ date }) {
                 {day}
               </div>) :
               (
-                <div className='w-[50px] aspect-square relative'>
+                <div key={index+"day"} 
+                className='w-[50px] aspect-square relative'>
                   <span className='absolute top-0 w-full h-[100px] bg-[#4DA1A9] rounded-[10px] py-[14px]
                     text-white font-Poppins-Medium
                     flex items-end justify-center'>{date.dayAbbreviation}</span>
                   <div className='relative aspect-square w-[50px] flex bg-[#79D7BE]
                     rounded-[10px] justify-center items-center text-[20px] text-[#2E5077] 
                     font-Poppins-SemiBold '
-                    key={index + "day"}>{day}
+                  >{day}
 
                   </div>
                 </div>)

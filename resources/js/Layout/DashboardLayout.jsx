@@ -16,30 +16,36 @@ export default function DashboardLayout({ children }) {
       <main className="min-h-[100vh] flex bg-[#F6F4F0]">
         <header className="w-[160px] flex flex-col items-center justify-between py-[50px]">
           <div className="flex flex-col gap-[50px]">
-            <Link href={route('home')}>
+            <Link className=' flex justify-center items-center' href={route('home')}>
             <button className='w-fit mb-[42px]' type='button'>
               <img src={navDashboardLogo} alt="" />
             </button>
             </Link>
-            <Link href={route('home')}>
+            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
             <button className='w-fit ' type='button'>
               <img src={navDashboardHomeIcon} alt="" />
             </button>
             </Link>
-            <Link href={route('learn.show')}>
+            <Link className='w-[45px] aspect-square flex justify-center items-cente mr-[10px]r' href={route('learn.show')}>
             <button className='w-fit ' type='button'>
               <img src={navDashboardLearnIcon} alt="" />
             </button>
             </Link>
+            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
             <button className='w-fit ' type='button'>
               <img src={navDashboardExerciseIcon} alt="" />
             </button>
+            </Link>
+            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
             <button className='w-fit ' type='button'>
               <img src={navDashboardMusicIcon} alt="" />
             </button>
+            </Link>
+            <Link className='w-[45px] aspect-square flex justify-center items-center mr-[10px]' href={route('home')}>
             <button className='w-fit ' type='button'>
               <img src={navDashboardAccountIcon} alt="" />
             </button>
+            </Link>
 
           </div>
           <LogoutButton route={route}/>
@@ -59,8 +65,8 @@ function LogoutButton({route}) {
     post(route('auth.logout'))
   }
   return (
-    <form onSubmit={submit}>
-      <button type='submit'>
+    <form className='' onSubmit={submit}>
+      <button className=' aspect-square flex justify-center items-center mr-[5px]' type='submit'>
         <img src={navDashboardLogoutIcon} alt="" />
       </button>
     </form>

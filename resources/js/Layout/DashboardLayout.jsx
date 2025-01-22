@@ -1,15 +1,15 @@
-import navDashboardAccountIcon from "@images/dashboard/navDashboardAccountIcon.svg";
-import navDashboardExerciseIcon from "@images/dashboard/navDashboardExerciseIcon.svg";
-import navDashboardHomeIcon from "@images/dashboard/navDashboardHomeIcon.svg";
-import navDashboardLearnIcon from "@images/dashboard/navDashboardLearnIcon.svg";
-import navDashboardMusicIcon from "@images/dashboard/navDashboardMusicIcon.svg";
-import navDashboardWhiteAccountIcon from "@images/dashboard/navDashboardWhiteAccountIcon.svg";
-import navDashboardWhiteExerciseIcon from "@images/dashboard/navDashboardWhiteExerciseIcon.svg";
-import navDashboardWhiteHomeIcon from "@images/dashboard/navDashboardWhiteHomeIcon.svg";
-import navDashboardWhiteLearnIcon from "@images/dashboard/navDashboardWhiteLearnIcon.svg";
-import navDashboardWhiteMusicIcon from "@images/dashboard/navDashboardWhiteMusicIcon.svg";
-import navDashboardLogoutIcon from "@images/dashboard/navDashboardLogoutIcon.svg";
-import navDashboardLogo from "@images/dashboard/navDashboardLogo.svg";
+import navDashboardAccountIcon from "@images/dashboard/layout/navDashboardAccountIcon.svg";
+import navDashboardExerciseIcon from "@images/dashboard/layout/navDashboardExerciseIcon.svg";
+import navDashboardHomeIcon from "@images/dashboard/layout/navDashboardHomeIcon.svg";
+import navDashboardLearnIcon from "@images/dashboard/layout/navDashboardLearnIcon.svg";
+import navDashboardMusicIcon from "@images/dashboard/layout/navDashboardMusicIcon.svg";
+import navDashboardWhiteAccountIcon from "@images/dashboard/layout/navDashboardWhiteAccountIcon.svg";
+import navDashboardWhiteExerciseIcon from "@images/dashboard/layout/navDashboardWhiteExerciseIcon.svg";
+import navDashboardWhiteHomeIcon from "@images/dashboard/layout/navDashboardWhiteHomeIcon.svg";
+import navDashboardWhiteLearnIcon from "@images/dashboard/layout/navDashboardWhiteLearnIcon.svg";
+import navDashboardWhiteMusicIcon from "@images/dashboard/layout/navDashboardWhiteMusicIcon.svg";
+import navDashboardLogoutIcon from "@images/dashboard/layout/navDashboardLogoutIcon.svg";
+import navDashboardLogo from "@images/dashboard/layout/navDashboardLogo.svg";
 import { Link, useForm } from "@inertiajs/react";
 import { useRoute } from "@vendor/tightenco/ziggy";
 

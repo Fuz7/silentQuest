@@ -2,21 +2,36 @@ import dashboardIcon from '@images/dashboard/dashboardIcon.svg'
 import DashboardLayout from '../../Layout/DashboardLayout'
 import dashboardExperienceBackground from
   '@images/dashboard/dashboardExperienceBackground.jpg'
-export default function Dashboard({ auth, date }) {
+import dashboardQuoteBackground from
+  '@images/dashboard/dashboardQuoteBackground.jpg'
+import dashboardMeditationIcon from
+  '@images/dashboard/dashboardMeditationIcon.svg'
+import dashboardMusicCardIcon from
+  '@images/dashboard/dashboardMusicCardIcon.svg'
+import dashboardKnowMoreCardIcon from
+  '@images/dashboard/dashboardKnowMoreCardIcon.svg'
+import { Link } from '@inertiajs/react'
+import { useRoute } from "@vendor/tightenco/ziggy";
 
+
+export default function Dashboard({ auth, date }) {
+  const route = useRoute();
   console.log(date)
   return (<>
-    <DashboardLayout>
-      <section className="flex">
-        <div className="flex flex-col w-[1000px]">
+    <DashboardLayout type={'dashboard'}>
+         <div className="flex flex-col w-[1000px]">
           <Header auth={auth} />
           <Date date={date} />
           <h3 className='font-Poppins-Medium text-[25px] mt-[25px] ml-[40px]'>Some Insights</h3>
-          <div className='flex min-w-full mt-[40px] ml-[40px]'>
+          <div className='flex min-w-full gap-[20px] mt-[40px] ml-[40px] flex-wrap'>
             <ExperienceCard />
+            <ExerciseCard />
+            <QuoteCard />
+            <MeditationTimeCard />
+            <MusicTimeCard />
+            <KnowMoreCard />
           </div>
         </div>
-      </section>
     </DashboardLayout>
   </>)
 }
@@ -90,6 +105,93 @@ function ExperienceCard() {
           <p className='font-Poppins-SemiBold text-white text-[24px] ml-auto leading-none'>1900exp</p>
         </div>
       </div>
+    </>
+  )
+}
+
+function ExerciseCard() {
+  return (
+    <>
+      <div className='w-[170px] aspect-square flex flex-col items-center font-Poppins-SemiBold 
+            rounded-[20px]
+            text-[#2E5077] leading-none bg-[#79D7BE]'>
+        <p className='text-[60px] leading-none mt-[40px]'>4</p>
+        <h4 className='mt-[20px] text-[20px]'>Exercises</h4>
+      </div>
+    </>
+  )
+}
+
+function QuoteCard() {
+  return (
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${dashboardQuoteBackground})`
+        }}
+        className={`w-[430px] h-[170px] pl-[30px] pt-[30px] flex flex-col
+            `}>
+        <p className='font-Poppins-Regular text-[20px] max-w-[364px] text-white leading-none'>
+          "Meditation is a lifelong gift.
+          It&apos;s something you can call on at any time. I think it&apos;s a great thing."
+        </p>
+
+        <p className='font-Poppins-Regular text-white text-[20px] mt-[30px]
+               ml-auto mr-[30px] leading-none'>- Paul McCartney</p>
+
+      </div>
+    </>
+  )
+}
+
+function MeditationTimeCard() {
+  return (
+    <>
+      <div className='w-[352px] h-[170px] flex flex-col pl-[30px] font-Poppins-SemiBold 
+              rounded-[20px] relative overflow-hidden
+              text-[#272628] leading-none bg-[#D4EDED] '>
+        <img className='right-0 bottom-[-40px] absolute ' src={dashboardMeditationIcon} alt="" />
+        <p className='text-[60px] leading-none font-Poppins-Bold mt-[40px] ml-[20px]'>12:30</p>
+        <h4 className='mt-[20px] text-[20px]'>Meditation Time</h4>
+      </div>
+    </>
+  )
+}
+
+function MusicTimeCard() {
+  return (
+    <div
+
+      className={`w-[300px] h-[170px] pl-[30px] pt-[30px] bg-[#272628] flex flex-col
+                font-Poppins-SemiBold rounded-[20px]
+            `}>
+      <div className='flex gap-[20px] items-center'>
+        <img src={dashboardMusicCardIcon} alt="" />
+        <h4 className=' text-[20px] text-white leading-none'>
+          Music Time</h4>
+      </div>
+
+      <p className='ml-[10px] mt-[35px] text-[50px] text-white leading-none'>
+        00:00:00</p>
+
+    </div>
+  )
+}
+
+function KnowMoreCard() {
+  return (
+    <>
+      <Link
+        href={route('learn.show')}
+        className={`w-[268px] h-[170px] pl-[30px] pt-[30px] bg-[#2E5077] flex flex-col
+                font-Poppins-Regular rounded-[20px]
+            `}>
+        <div className='flex gap-[20px] items-center'>
+          <p className=' text-[20px] text-white max-w-[178px] leading-none'>
+            Know more about meditations</p>
+        </div>
+        <img className='w-[30px] aspect-square mt-[18px] ml-auto mr-[50px]' src={dashboardKnowMoreCardIcon} alt="" />
+      </Link>
     </>
   )
 }

@@ -4,7 +4,6 @@ import registerPasswordIcon from "@images/auth/registerPasswordIcon.svg";
 import registerErrorIcon from "@images/auth/registerErrorIcon.svg";
 import closedRegisterPasswordIcon from "@images/auth/closedRegisterPasswordIcon.svg";
 import { Link, useForm } from "@inertiajs/react";
-import { useRoute } from "@vendor/tightenco/ziggy";
 import { useState } from "react";
 
 export default function Register() {

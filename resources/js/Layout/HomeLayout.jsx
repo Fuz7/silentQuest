@@ -14,7 +14,7 @@ export default function HomeLayout({children}){
             <img src={navHomeIcon} alt="" />
           </Link>
           <div className="h-fit">
-            <Link href={route('login.show')} className="flex gap-[10px] items-center">
+            <Link href={route('login')} className="flex gap-[10px] items-center">
               <p className="text-[14px] font-Poppins-Regular">Login/Register</p>
               <img src={navAccountIcon} alt="" />
             </Link>

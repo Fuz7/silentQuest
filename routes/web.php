@@ -7,7 +7,7 @@ use App\Http\Controllers\MeditationController;
 use App\Models\Exercise;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Session;
 
 // Route::get('/login',function(){
   //     return inertia('Auth/Login');
@@ -41,7 +41,15 @@ Route::middleware(['auth'])->group(function () {
   // For Exercise Creation
   // Route::post('/meditate/store',[ExerciseController::class,'createBreathingExercise'])->name('meditate.store');
 
+  Route::post('/breathing/goto',[ExerciseController::class, 'gotoExercisePanel'])->name('breathing');
 
+  Route::get('/breathing/panel', function () {
+      return inertia('Dashboard/Breathing/Breathing', [
+          'exerciseId' => Session::get('exerciseId'),
+      ]);
+
+      
+  })->name('breathing.panel');
   Route::inertia('/breathing/list','Dashboard/Breathing/BreathingList',[
     "breathingList" => ExerciseController::getBreathingList(),
   ])->name('breathing.show');

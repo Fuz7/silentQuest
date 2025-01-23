@@ -1,12 +1,24 @@
 import BreathingMeditateLayout from "../../../Layout/BreathingMeditateLayout";
 import dropdownIcon from '@images/dashboard/breathing/dropdownIcon.svg'
 import grayBar from '@images/dashboard/breathing/grayBar.svg'
-import { useState } from "react";
+import { useForm } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import { useRoute } from "@vendor/tightenco/ziggy";
 export default function BreathingList({ breathingList }) {
   console.log(breathingList)
+  const { data, setData, post } = useForm({
+    id: null,
+  })
   const [beginnerVisible, setBeginnerVisible] = useState(false)
   const [intermediateVisible, setIntermediateVisible] = useState(false)
   const [advanceVisible, setAdvanceVisible] = useState(false)
+
+  useEffect(()=>{
+    if (data.id !== null){
+      post(route('breathing'))
+    }
+  },[data.id])
+
   return (
     <>
 
@@ -18,7 +30,7 @@ export default function BreathingList({ breathingList }) {
             <div className={`${beginnerVisible ? 'h-[235px]' : 'h-[0px]'}  transition-[height]  overflow-hidden w-full`}>
               {breathingList.beginner.map((breathing, index) => {
                 return (
-                  <BreathingItem key={"beginner" + breathing.name} id={breathingList.id} breathingList={breathingList} index={index} name={breathing.name} exp={breathing.exp} />
+                  <BreathingItem key={"beginner" + breathing.name} setData={setData} id={breathing.id} breathingList={breathingList} index={index} name={breathing.name} exp={breathing.exp} />
                 )
               })}
             </div>
@@ -29,7 +41,7 @@ export default function BreathingList({ breathingList }) {
             <div className={`${intermediateVisible ? 'h-[235px]' : 'h-[0px]'}  transition-[height]  overflow-hidden w-full`}>
               {breathingList.intermediate.map((breathing, index) => {
                 return (
-                  <BreathingItem key={"Intermediate" + breathing.name} id={breathingList.id} breathingList={breathingList} index={index} name={breathing.name} exp={breathing.exp} />
+                  <BreathingItem key={"Intermediate" + breathing.name} setData={setData} id={breathing.id} breathingList={breathingList} index={index} name={breathing.name} exp={breathing.exp} />
                 )
               })}
             </div>
@@ -40,7 +52,7 @@ export default function BreathingList({ breathingList }) {
             <div className={`${advanceVisible ? 'h-[235px]' : 'h-[0px]'}  transition-[height]  overflow-hidden w-full`}>
               {breathingList.advance.map((breathing, index) => {
                 return (
-                  <BreathingItem key={"Advance" + breathing.name} id={breathingList.id} breathingList={breathingList} index={index} name={breathing.name} exp={breathing.exp} />
+                  <BreathingItem key={"Advance" + breathing.name} setData={setData} id={breathing.id} breathingList={breathingList} index={index} name={breathing.name} exp={breathing.exp} />
                 )
               })}
             </div>
@@ -51,7 +63,7 @@ export default function BreathingList({ breathingList }) {
   )
 }
 
-function BreathingHeader({ difficultyVisible, setDifficultVisible,title }) {
+function BreathingHeader({ difficultyVisible, setDifficultVisible, title }) {
   return (
     <>
       <span className={`absolute top-[80px] left-0 w-full  ${difficultyVisible ? 'visible' : 'invisible'} bg-[#979CA6] h-[1px]`}></span>
@@ -67,9 +79,14 @@ function BreathingHeader({ difficultyVisible, setDifficultVisible,title }) {
   )
 }
 
-function BreathingItem({ name, exp, index, breathingList, id }) {
+function BreathingItem({ name, exp, index, breathingList, id,setData }) {
+
   return (
-    <div className={`flex items-center w-full  px-[10px] font-Poppins-Regular text-[22px] text-[#272628]
+    <div
+    onClick={()=>{
+      setData('id',id)
+    }} 
+    className={`flex items-center w-full  px-[10px] font-Poppins-Regular text-[22px] text-[#272628]
                    cursor-pointer hover:bg-[#F0F0F0] h-[50px] rounded-[10px]
                    ${index === 0 ? 'mt-[27px]' : 'mt-[15px]'} ${index === breathingList.lenght - 1 && 'mb-[28px]'}`}>
       <img src={grayBar} alt="" />

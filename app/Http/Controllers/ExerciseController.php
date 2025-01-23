@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Exercise;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
@@ -91,5 +93,17 @@ class ExerciseController extends Controller
 
         return $breathingList;
     }
+
+
+    public function gotoExercisePanel(Request $request){
+
+        $fields = $request->validate([
+        'id' => 'required|integer',
+        ]);
+        $request -> session()->put('exerciseId',$fields['id']);
+        Session::put('exerciseId',$fields['id']);
+       return redirect(route('breathing.panel')); 
+    }
+
 
 }

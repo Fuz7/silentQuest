@@ -10,7 +10,7 @@ export default function Register() {
   return (
     <>
       <AuthLayout type={"register"}>
-        <section className="min-h-[100vh] relative flex flex-col items-end pr-[300px] pt-[160px]">
+        <section className="min-h-[100vh] bg-white relative flex flex-col items-end pr-[300px] pt-[160px]">
           <img
             className="absolute left-0 bottom-0"
             src={registerBackground}

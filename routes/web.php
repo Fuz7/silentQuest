@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/breathing/panel', function () {
       return inertia('Dashboard/Breathing/Breathing', [
-          'exerciseId' => Session::get('exerciseId'),
+          'exerciseData' => Session::get('exerciseData'),
       ]);
 
       

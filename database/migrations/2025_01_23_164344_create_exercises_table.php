@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('category');
+            $table->text('description');
             $table->string('pattern');
             $table->integer('cycle');
             $table->integer('exp');

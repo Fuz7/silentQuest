@@ -60,7 +60,8 @@ function DashboardNavButtons({ route, currentType }) {
       active: navDashboardWhiteAccountIcon
     },
   ];
-  const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", ["Dashboard/Meditate/Meditate",'Dashboard/Breathing/BreathingList'], "music", "account"];
+  const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", ["Dashboard/Meditate/Meditate",'Dashboard/Breathing/Breathing',
+    'Dashboard/Breathing/BreathingList'], "music", "account"];
 
   return (
     <>

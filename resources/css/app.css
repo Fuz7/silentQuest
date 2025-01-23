@@ -26,3 +26,8 @@
 body{
   background-color: #F6F4F0;
 }
+
+.circleOrigin{
+  transform-origin: center center;
+}
+

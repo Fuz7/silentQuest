@@ -14,6 +14,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"Box Breathing (Basic)",
             'category'=>'beginner',
+            'description' => 'Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds, hold for 4 seconds.',
             'pattern'=> '4-4-4-4',
             'cycle' => 4,
             'exp' => 40,
@@ -21,6 +22,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"4-4 Breathing",
             'category'=>'beginner',
+            'description' => 'Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds.',
             'pattern'=> '4-4-4',
             'cycle' => 4,
             'exp' => 45,
@@ -28,6 +30,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"Simple Diaphragmatic Breathing",
             'category'=>'beginner',
+            'description' => 'Inhale deeply for 4 seconds, hold for 4 seconds, exhale slowly for 6 seconds.',
             'pattern'=> '4-4-6',
             'cycle' => 4,
             'exp' => 60,
@@ -35,6 +38,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"Box Breathing (Extended)",
             'category'=>'intermediate',
+            'description' => 'Inhale for 6 seconds, hold for 6 seconds, exhale for 6 seconds, hold for 6 seconds.',
             'pattern'=> '6-6-6-6',
             'cycle' => 4,
             'exp' => 72,
@@ -42,6 +46,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"4-7-8 Breathing",
             'category'=>'intermediate',
+            'description' => 'Inhale for 4 seconds, hold for 7 seconds, exhale for 8 seconds.',
             'pattern'=> '4-7-8',
             'cycle' => 4,
             'exp' => 75,
@@ -49,6 +54,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"Alternative Nostril Breathing (Simple)",
             'category'=>'intermediate',
+            'description' => 'Inhale through one nostril for 4 seconds, hold for 6 seconds, exhale through the opposite nostril for 8 seconds.',
             'pattern'=> '4-6-8',
             'cycle' => 4,
             'exp' => 80,
@@ -56,6 +62,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"Box Breathing (Advanced)",
             'category'=>'advance',
+            'description' => 'Inhale for 8 seconds, hold for 8 seconds, exhale for 8 seconds, hold for 8 seconds.',
             'pattern'=> '8-8-8-8',
             'cycle' => 4,
             'exp' => 150,
@@ -63,6 +70,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"Extended Alternative Nostril Breathing",
             'category'=>'advance',
+            'description' => 'Inhale through one nostril for 6 seconds, hold for 8 seconds, exhale through the other nostril for 10 seconds. ',
             'pattern'=> '6-8-10',
             'cycle' => 4,
             'exp' => 162,
@@ -70,6 +78,7 @@ class ExerciseController extends Controller
         Exercise::create([
             'name'=>"Deep Diaphragmatic Breathing with Extended Hold",
             'category'=>'advance',
+            'description' => 'Inhale for 6 seconds, hold for 10 seconds, exhale for 6 seconds.',
             'pattern'=> '6-10-6',
             'cycle' => 4,
             'exp' => 175,
@@ -100,9 +109,9 @@ class ExerciseController extends Controller
         $fields = $request->validate([
         'id' => 'required|integer',
         ]);
-        $request -> session()->put('exerciseId',$fields['id']);
-        Session::put('exerciseId',$fields['id']);
-       return redirect(route('breathing.panel')); 
+        $exerciseData = Exercise::where('id',$fields['id'])->get();
+        Session::put('exerciseData',$exerciseData[0]);
+        return redirect(route('breathing.panel')); 
     }
 
 

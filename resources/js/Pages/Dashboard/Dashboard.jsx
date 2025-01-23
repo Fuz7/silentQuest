@@ -15,6 +15,7 @@ import { useRoute } from "@vendor/tightenco/ziggy";
 
 
 export default function Dashboard({ auth, date }) {
+  console.log(auth)
   const route = useRoute();
   return (<>
          <div className="flex flex-col w-[1000px]">

@@ -6,15 +6,44 @@ import pauseButton from "@images/dashboard/meditate/pauseButton.svg";
 import stopButton from "@images/dashboard/meditate/stopButton.svg";
 import playButton from "@images/dashboard/meditate/playButton.svg";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "@inertiajs/react";
+import { useRoute } from "@vendor/tightenco/ziggy";
 
-export default function Meditate() {
+export default function Meditate({}) {
+  const route = useRoute()
   const [isCustomModalVisible, setCustomModalVisible] = useState(false);
   const [countdownStarted, setCountdownStarted] = useState(false);
   const [timerDuration, setTimerDuration] = useState(600);
   const [remainingSeconds, setRemainingSeconds] = useState(600);
   const [sessionName, setSessionName] = useState('Short Session');
+  const [sendToRoute,setSendToRoute] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const intervalRef = useRef(null);
+  const {data,setData,post} = useForm({
+    duration:0,
+  })
+
+  function sendDurationToDB(prevSeconds){
+    setData("duration",( (timerDuration - prevSeconds)))
+    setSendToRoute(true)
+  }
+
+  useEffect(()=>{
+    if(data.duration !== 0 && sendToRoute){
+      setSendToRoute(false)
+      post(route('meditate.store'))
+    }
+  },[data.duration,sendToRoute])
+
+  useEffect(()=>{
+    
+    const mounted = addEventListener('beforeunload',()=>{
+      if(countdownStarted){
+          sendDurationToDB(remainingSeconds)
+      }
+    })
+    return () => removeEventListener('beforeunload',mounted)
+  },[countdownStarted,countdownStarted,remainingSeconds])
 
   useEffect(() => {
     if (countdownStarted && timerDuration === remainingSeconds) {
@@ -22,7 +51,8 @@ export default function Meditate() {
         if (!isPaused) {
           setRemainingSeconds((prevSeconds) => {
             if (prevSeconds <= 1) {
-              clearInterval(countdownInterval);
+              sendDurationToDB(prevSeconds -1)
+              clearInterval(intervalRef.current);
               setCountdownStarted(false);
               return timerDuration;
             }
@@ -91,9 +121,9 @@ export default function Meditate() {
             </div>
 
             <CountdownTimer sessionName={sessionName} remainingSeconds={remainingSeconds} />
-            <TimerControlButtons setRemainingSeconds={setRemainingSeconds} timerDuration={timerDuration}
+            <TimerControlButtons remainingSeconds={remainingSeconds} setRemainingSeconds={setRemainingSeconds} timerDuration={timerDuration}
               setCountdownStarted={setCountdownStarted} countdownStarted={countdownStarted} intervalRef={intervalRef}
-              isPaused={isPaused} setIsPaused={setIsPaused}></TimerControlButtons>
+              isPaused={isPaused} setIsPaused={setIsPaused} sendDurationToDB={sendDurationToDB}></TimerControlButtons>
           </div>
         </div>
       </BreathingMeditateLayout>
@@ -134,7 +164,8 @@ function FixedSessionButton({
   );
 }
 
-function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDuration, setRemainingSeconds, isPaused, setIsPaused, intervalRef }) {
+function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDuration,remainingSeconds, setRemainingSeconds, isPaused, setIsPaused, intervalRef,sendDurationToDB }) {
+  
   return (
     <>
       {countdownStarted ? (
@@ -148,7 +179,8 @@ function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDurat
 
                   setRemainingSeconds((prevSeconds) => {
                     if (prevSeconds <= 1) {
-                      clearInterval(countdownInterval);
+                      sendDurationToDB(prevSeconds -1)
+                      clearInterval(intervalRef.current);
                       setCountdownStarted(false);
                       return timerDuration;
                     }
@@ -174,6 +206,7 @@ function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDurat
           )}
           <button
             onClick={() => {
+              sendDurationToDB( remainingSeconds)
               setCountdownStarted(false)
               setRemainingSeconds(timerDuration)
             }}

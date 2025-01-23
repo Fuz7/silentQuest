@@ -23,12 +23,13 @@ export default function DashboardLayout({ children, type }) {
   return (
     <>
       <main className="min-h-[100vh] flex bg-[#F6F4F0]">
-        <header className="w-[160px] flex flex-col items-center justify-between py-[50px]">
+        <header className="w-[160px] flex flex-col items-center justify-between min-h-[100vh] fixed left-0 py-[50px]">
           <div className="flex flex-col gap-[50px]">
             <DashboardNavButtons route={route} currentType={type} />
           </div>
           <LogoutButton route={route} />
         </header>
+        <div className="min-w-[160px]"></div>
         <section className="flex relative">{children}</section>
       </main>
     </>
@@ -59,7 +60,7 @@ function DashboardNavButtons({ route, currentType }) {
       active: navDashboardWhiteAccountIcon
     },
   ];
-  const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", ["Dashboard/Meditate/Meditate",'Dashboard/Breathing/Breathing'], "music", "account"];
+  const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", ["Dashboard/Meditate/Meditate",'Dashboard/Breathing/BreathingList'], "music", "account"];
 
   return (
     <>

@@ -2,7 +2,9 @@
 
 use App\Helpers\DateHelper;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\MeditationController;
+use App\Models\Exercise;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,8 +35,14 @@ Route::middleware(['auth'])->group(function () {
   })->name('home');
  
   Route::inertia('/learn','Dashboard/Learn/Learn')->name('learn.show');
-  Route::inertia('/breathing','Dashboard/Breathing/Breathing')->name('breathing.show');
+  
   Route::inertia('/meditate','Dashboard/Meditate/Meditate')->name('meditate.show');
   Route::post('/meditate/store',[MeditationController::class, 'storeOrUpdate'])->name('meditate.store');
-    
+  // For Exercise Creation
+  // Route::post('/meditate/store',[ExerciseController::class,'createBreathingExercise'])->name('meditate.store');
+
+
+  Route::inertia('/breathing/list','Dashboard/Breathing/BreathingList',[
+    "breathingList" => ExerciseController::getBreathingList(),
+  ])->name('breathing.show');
 });

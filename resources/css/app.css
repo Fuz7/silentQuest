@@ -22,3 +22,7 @@
 .dashboardLink:hover > span{
   display: block;
 }
+
+body{
+  background-color: #F6F4F0;
+}

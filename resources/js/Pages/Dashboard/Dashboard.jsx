@@ -14,19 +14,19 @@ import { Link } from '@inertiajs/react'
 import { useRoute } from "@vendor/tightenco/ziggy";
 
 
-export default function Dashboard({ auth, date }) {
-  console.log(auth)
+export default function Dashboard({ auth, date,level,exerciseCount,meditationTime }) {
   const route = useRoute();
+  const {title,exp} = level
   return (<>
          <div className="flex flex-col w-[1000px]">
           <Header auth={auth} />
           <Date date={date} />
-          <h3 className='font-Poppins-Medium text-[25px] mt-[25px] ml-[40px]'>Some Insights</h3>
+          <h3 className='font-Poppins-Medium text-[25px] mt-[25px] ml-[40px]'>Daily Insights</h3>
           <div className='flex min-w-full gap-[20px] mt-[40px] ml-[40px] flex-wrap'>
-            <ExperienceCard />
-            <ExerciseCard />
+            <ExperienceCard title={title} exp={exp} />
+            <ExerciseCard exerciseCount={exerciseCount} />
             <QuoteCard />
-            <MeditationTimeCard />
+            <MeditationTimeCard meditationTime={meditationTime} />
             <MusicTimeCard />
             <KnowMoreCard />
           </div>
@@ -86,7 +86,7 @@ function Date({ date }) {
   </>)
 }
 
-function ExperienceCard() {
+function ExperienceCard({title,exp}) {
   return (
     <>
       <div
@@ -95,25 +95,25 @@ function ExperienceCard() {
         }}
         className={`w-[320px] h-[170px] pl-[30px] pt-[30px] flex flex-col
             `}>
-        <h4 className='font-Poppins-Medium text-[30px] text-white leading-none'>
-          Mindful Seeker</h4>
-        <div className='mt-[55px] flex  items-center pr-[20px]'>
+        <h4 className='font-Poppins-Medium text-[26px] max-w-[260px] text-white leading-none'>
+          {title}</h4>
+        <div className='mt-auto mb-[35px] flex  items-center pr-[20px]'>
           <h5 className='font-Poppins-Regular text-[20px] text-white leading-none'>
             Experience Pts:</h5>
-          <p className='font-Poppins-SemiBold text-white text-[24px] ml-auto leading-none'>1900exp</p>
+          <p className='font-Poppins-SemiBold text-white text-[24px] ml-auto leading-none'>{exp}exp</p>
         </div>
       </div>
     </>
   )
 }
 
-function ExerciseCard() {
+function ExerciseCard({exerciseCount}) {
   return (
     <>
       <div className='w-[170px] aspect-square flex flex-col items-center font-Poppins-SemiBold 
             rounded-[20px]
             text-[#2E5077] leading-none bg-[#79D7BE]'>
-        <p className='text-[60px] leading-none mt-[40px]'>4</p>
+        <p className='text-[60px] leading-none mt-[40px]'>{exerciseCount}</p>
         <h4 className='mt-[20px] text-[20px]'>Exercises</h4>
       </div>
     </>
@@ -142,14 +142,14 @@ function QuoteCard() {
   )
 }
 
-function MeditationTimeCard() {
+function MeditationTimeCard({meditationTime}) {
   return (
     <>
       <div className='w-[352px] h-[170px] flex flex-col pl-[30px] font-Poppins-SemiBold 
               rounded-[20px] relative overflow-hidden
               text-[#272628] leading-none bg-[#D4EDED] '>
         <img className='right-0 bottom-[-40px] absolute ' src={dashboardMeditationIcon} alt="" />
-        <p className='text-[60px] leading-none font-Poppins-Bold mt-[40px] ml-[20px]'>12:30</p>
+        <p className='text-[60px] leading-none font-Poppins-Bold mt-[40px] ml-[20px]'>{meditationTime}</p>
         <h4 className='mt-[20px] text-[20px]'>Meditation Time</h4>
       </div>
     </>

@@ -1,5 +1,10 @@
-export default function Account({ auth }) {
+export default function Account({ auth, meditationTime, exercise, level }) {
 
+  function getTotalCount(count) {
+    return (count.beginner + count.intermediate + count.advance)
+  }
+  const {beginner,intermediate,advance} = exercise.count
+  const {title,exp,expNeeded} = level
   return (
     <div className="w-[1080px] flex flex-col pl-[60px] pt-[60px]">
       <h2 className="font-Poppins-Medium text-[32px] text-[#2E5077] leading-none mb-[46px]">Account Details</h2>
@@ -18,11 +23,11 @@ export default function Account({ auth }) {
         <h3 className=" text-[#272628] font-Poppins-Medium text-[20px]">Total accumulated</h3>
         <div className="flex justify-between pr-[30px]">
           <div className="flex flex-col gap-[15px]">
-            <p className="font-Poppins-SemiBold text-[32px] text-[#272628] leading-none">24</p>
+            <p className="font-Poppins-SemiBold text-[32px] text-[#272628] leading-none">{getTotalCount(exercise.count)}</p>
             <p className="font-Poppins-Regular text-[20px] text-[#979CA6] leading-none">Exercises</p>
           </div>
           <div className="flex flex-col gap-[15px]">
-            <p className="font-Poppins-SemiBold text-[32px] text-[#272628] leading-none">00h 00m 00s</p>
+            <p className="font-Poppins-SemiBold text-[32px] text-[#272628] leading-none">{meditationTime}</p>
             <p className="font-Poppins-Regular text-[20px] text-[#979CA6] leading-none">Meditation Time</p>
           </div>
           <div className="flex flex-col gap-[15px]">
@@ -41,15 +46,15 @@ export default function Account({ auth }) {
           <div className="h-full px-[50px] pt-[30px] flex flex-col text-[20px] font-Poppins-Regular text-[#272628] gap-[30px]">
             <div className="flex justify-between">
               <div className="leading-none">Beginner</div>
-              <div className="leading-none">12</div>
+              <div className="leading-none">{beginner}</div>
             </div>
             <div className="flex justify-between">
               <div className="leading-none">Intermediate</div>
-              <div className="leading-none">8</div>
+              <div className="leading-none">{intermediate}</div>
             </div>
             <div className="flex justify-between">
               <div className="leading-none">Advance</div>
-              <div className="leading-none">4</div>
+              <div className="leading-none">{advance}</div>
             </div>
           </div>
         </div>
@@ -61,15 +66,15 @@ export default function Account({ auth }) {
             Meditation Title
           </div>
           <div className="flex flex-col px-[50px] pt-[30px] gap-[25px] text-[#272628]">
-            <h2 className="text-[30px] font-Poppins-SemiBold leading-none">Mindful Seeker</h2>
+            <h2 className="text-[30px] font-Poppins-SemiBold leading-none">{title}</h2>
             <div className="flex flex-col gap-[13px]">
               <div className="flex justify-between font-Poppins-Regular text-[20px]">
                 <p className="leading-none">Experience Pts:</p>
-                <p className="leading-none">1000exp</p>
+                <p className="leading-none">{exp}exp</p>
               </div>
               <div className="flex justify-between font-Poppins-Regular text-[#979CA6]">
                 <p className="text-[16px] max-w-[150px] leading-none">Experience points needed to ascend:</p>
-                <p className="text-[20px]">2000exp</p>
+                <p className="text-[20px]">{expNeeded}exp</p>
               </div>
             </div>
           </div>

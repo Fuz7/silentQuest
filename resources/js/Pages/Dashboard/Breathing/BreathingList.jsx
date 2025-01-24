@@ -4,8 +4,8 @@ import grayBar from '@images/dashboard/breathing/grayBar.svg'
 import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { useRoute } from "@vendor/tightenco/ziggy";
-export default function BreathingList({ breathingList }) {
-  console.log(breathingList)
+export default function BreathingList({ breathingList, }) {
+
   const { data, setData, post } = useForm({
     id: null,
   })

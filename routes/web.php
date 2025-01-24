@@ -3,6 +3,7 @@
 use App\Helpers\DateHelper;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MeditationController;
 use App\Models\Exercise;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,11 @@ Route::middleware(['auth'])->group(function () {
           'date' => [ 'dayAbbreviation' => DateHelper::getCurrentDayAbbrevation(),
                       'monthName' => DateHelper::getCurrMonthName(),
                       'weekdays' => DateHelper::getCurrentWeekdays()],
+          'level'=>['title'=>LevelController::getUserTitle(),
+                    'exp'=>LevelController::getTotalExpToday()],
+          'exerciseCount' => ExerciseController::getUserTotalExerciseCountToday(),
+          'meditationTime' => MeditationController::getTotalMeditationTimeToday(),
+
       ]);
   })->name('home');
  
@@ -50,13 +56,18 @@ Route::middleware(['auth'])->group(function () {
       ]);})->name('breathing.panel');
   Route::post('/breathing/store',[ExerciseController::class, 'storeOrUpdate'])->name('breathing.store');
   Route::inertia('/breathing/list','Dashboard/Breathing/BreathingList',[
-    "breathingList" => ExerciseController::getBreathingList(),
+  "breathingList" => ExerciseController::getBreathingList(),
   ])->name('breathing.show');
-
-
+    
+  
   Route::get('/account', function () {
-      return inertia('Dashboard/Account/Account', [
-        'auth' => Auth::user(),
+    return inertia('Dashboard/Account/Account', [
+      'auth' => Auth::user(),
+      'meditationTime' => MeditationController::getTotalMeditationTime(),
+      'exercise' => ['count' => ExerciseController::getUserTotalExerciseCount(),],
+      'level' => ['title'=>LevelController::getUserTitle(),
+                  'exp' =>LevelController::getTotalExp(),
+                  'expNeeded'=>LevelController::getExpNeeded()],
       ]);})->name('account.show');
   
 

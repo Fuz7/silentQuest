@@ -38,4 +38,39 @@ class MeditationController extends Controller
         return;
 
     }
+
+    public static function getTotalMeditationTime(){
+        $user = Auth::user();
+        $meditations = Meditation::where('user_id',$user['id'])
+                                 ->get();
+        $date = Carbon::now()->startOfDay();  // Outputs: 2024-01-24 00:00:00
+
+        foreach ($meditations as $meditation) {
+          # code...
+          $meditationTime = abs(Carbon::createFromFormat('H:i:s',$meditation['duration'])
+                                    ->diffInSeconds(Carbon::today()->startOfDay()));
+          $date->addSeconds($meditationTime);
+
+        }
+        $formattedTime = $date->format('H\h i\m s\s');
+        return($formattedTime);
+    }
+    public static function getTotalMeditationTimeToday(){
+      $user = Auth::user();
+      $meditationTime = Meditation::where('user_id',$user['id'])
+                                  ->whereDate('created_at',Carbon::today())
+                                  ->first()['duration'];
+      $dateFormat = Carbon::createFromFormat('H:i:s',$meditationTime);
+      $parts = explode(':', $dateFormat);
+      $hour = (int)substr($parts[0],-2); 
+      $formattedTime ='';
+      if($hour > 0){
+        $formattedTime = $dateFormat->format('G:i:s');
+      }else{
+        $formattedTime = $dateFormat->format('i:s');
+      }
+ 
+      return($formattedTime);
+    }
+
 }

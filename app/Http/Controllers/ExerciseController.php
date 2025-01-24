@@ -144,4 +144,34 @@ class ExerciseController extends Controller
     }
 
 
+    public static function getUserTotalExerciseCount(){
+        $user_id = Auth::user()->id;
+        $userExercises = UserExercise::where("user_id",$user_id)
+                                       ->get();
+        $exerciseCount = ['beginner' => 0,
+                          'intermediate'=> 0,
+                          'advance'=>0];
+        foreach ($userExercises as $userExercise) {
+            $count = $userExercise['count'];
+            $exerciseCategory = Exercise::where('id',$userExercise['exercise_id'])
+                                      ->first()['category'];
+            $exerciseCount[$exerciseCategory] += $count;
+        }
+        return($exerciseCount); 
+        
+    }
+    public static function getUserTotalExerciseCountToday(){
+        $user_id = Auth::user()->id;
+        $userExercises = UserExercise::where("user_id",$user_id)
+                                       ->whereDate('created_at',Carbon::today())
+                                       ->get();
+        $exerciseCount = 0;
+        foreach ($userExercises as $userExercise) {
+            $count = $userExercise['count'];
+            $exerciseCount += $count;
+        }
+        return($exerciseCount);
+        
+    }
+
 }

@@ -151,7 +151,7 @@ export default function Meditate({ }) {
               <div className="w-[350px] h-[350px] rounded-full  relative
               border-[#4DA1A9] border-[35px] border-solid">
                 <svg
-                  className="absolute left-[-40px] rotate-[60deg] top-[-41px]"
+                  className="absolute left-[-40px] rotate-[80deg] top-[-41px]"
                   width={"360px"} height={"360px"}>
                   <motion.circle
                     animate={controls}

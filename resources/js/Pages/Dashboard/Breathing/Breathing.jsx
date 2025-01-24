@@ -175,11 +175,11 @@ export default function Breathing({ exerciseData}) {
           }
         }
       }
-      if (!animationStarted && cycle < 1) {
+      if (!animationStarted && cycle < exerciseData.cycle) {
         setCycle(cycle + 1)
         triggerAnimation(0)
         setAnimationStarted(true)
-      } else if (!animationStarted && cycle === 1) {
+      } else if (!animationStarted && cycle === exerciseData.cycle) {
         animate(".circleOrigin", {
           scale: 1,
           translateX: ['-50%', '-50%'], translateY: ['-50%', '-50%']
@@ -223,7 +223,7 @@ export default function Breathing({ exerciseData}) {
   }
 
   return (
-    <BreathingMeditateLayout type={'breathing.show'}>
+    <BreathingMeditateLayout type={'breathing'}>
       <div className="w-[1080px] grow relative flex justify-center pt-[50px] pl-[220px]">
         <div className="absolute left-[60px] top-[8px] flex gap-[15px]">
           <Link href={route('breathing.show')}>

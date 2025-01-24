@@ -8,42 +8,78 @@ import playButton from "@images/dashboard/meditate/playButton.svg";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { useRoute } from "@vendor/tightenco/ziggy";
+import { motion, useAnimation, useMotionValue } from "motion/react";
 
-export default function Meditate({}) {
+export default function Meditate({ }) {
   const route = useRoute()
   const [isCustomModalVisible, setCustomModalVisible] = useState(false);
   const [countdownStarted, setCountdownStarted] = useState(false);
   const [timerDuration, setTimerDuration] = useState(600);
   const [remainingSeconds, setRemainingSeconds] = useState(600);
   const [sessionName, setSessionName] = useState('Short Session');
-  const [sendToRoute,setSendToRoute] = useState(false)
+  const [sendToRoute, setSendToRoute] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
-  const intervalRef = useRef(null);
-  const {data,setData,post} = useForm({
-    duration:0,
-  })
+  const [isDisabled,setIsDisabled] = useState(false)
+  const controls = useAnimation(); // Framer motion controls
+  const originalPathWidth = 1000
+  const pathWidth = useMotionValue(originalPathWidth)
+  const [isRecorded,setIsRecorded] = useState(false)
 
-  function sendDurationToDB(prevSeconds){
-    setData("duration",( (timerDuration - prevSeconds)))
+  useEffect(() => {
+    if (countdownStarted && !isPaused) {
+      controls.start({
+        strokeDashoffset: 0,  // Animates to completion
+        transition: {
+          duration: remainingSeconds, // Animation time should match countdown time
+          ease: "linear",
+        },
+      });
+    } else if (isPaused) {
+      controls.stop(); // Pauses animation
+    }else if(!countdownStarted && remainingSeconds === timerDuration &&isRecorded){
+      controls.start({
+        strokeDashoffset: originalPathWidth,  
+        transition: {
+          duration: 1,
+          ease: "linear",
+        },
+      });
+      setIsRecorded(false)
+      setIsDisabled(true)
+      setTimeout(() => {
+        setIsDisabled(false)
+      }, 1000);
+   
+      
+    }
+  }, [countdownStarted, isPaused, remainingSeconds, controls,isRecorded]);
+
+  const intervalRef = useRef(null);
+  const { data, setData, post } = useForm({
+    duration: 0,
+  })
+  function sendDurationToDB(prevSeconds) {
+    setIsRecorded(true)
+    setData("duration", ((timerDuration - prevSeconds)))
     setSendToRoute(true)
   }
 
-  useEffect(()=>{
-    if(data.duration !== 0 && sendToRoute){
+  useEffect(() => {
+    if (data.duration !== 0 && sendToRoute) {
       setSendToRoute(false)
       post(route('meditate.store'))
     }
-  },[data.duration,sendToRoute])
+  }, [data.duration, sendToRoute])
 
-  useEffect(()=>{
-    
-    const mounted = addEventListener('beforeunload',()=>{
-      if(countdownStarted){
-          sendDurationToDB(remainingSeconds)
+  useEffect(() => {
+
+    const mounted = addEventListener('beforeunload', () => {
+      if (countdownStarted) {
+        sendDurationToDB(remainingSeconds)
       }
     })
-    return () => removeEventListener('beforeunload',mounted)
-  },[countdownStarted,countdownStarted,remainingSeconds])
+    return () => removeEventListener('beforeunload', mounted)
+  }, [countdownStarted, countdownStarted, remainingSeconds])
 
   useEffect(() => {
     if (countdownStarted && timerDuration === remainingSeconds) {
@@ -51,7 +87,7 @@ export default function Meditate({}) {
         if (!isPaused) {
           setRemainingSeconds((prevSeconds) => {
             if (prevSeconds <= 1) {
-              sendDurationToDB(prevSeconds -1)
+              sendDurationToDB(prevSeconds - 1)
               clearInterval(intervalRef.current);
               setCountdownStarted(false);
               return timerDuration;
@@ -76,6 +112,7 @@ export default function Meditate({}) {
               setRemainingSeconds={setRemainingSeconds}
               setTimerDuration={setTimerDuration}
               setSessionName={setSessionName}
+              countdownStarted={countdownStarted}
               title={"Short Session"}
               duration={10}
             />
@@ -83,6 +120,7 @@ export default function Meditate({}) {
               setRemainingSeconds={setRemainingSeconds}
               setTimerDuration={setTimerDuration}
               setSessionName={setSessionName}
+              countdownStarted={countdownStarted}
               title={"Medium Session"}
               duration={30}
             />
@@ -90,6 +128,7 @@ export default function Meditate({}) {
               setRemainingSeconds={setRemainingSeconds}
               setTimerDuration={setTimerDuration}
               setSessionName={setSessionName}
+              countdownStarted={countdownStarted}
               title={"Extended Session"}
               duration={60}
             />
@@ -98,8 +137,9 @@ export default function Meditate({}) {
                 setCustomModalVisible(true);
               }}
               type="button"
-              className="w-[100px] aspect-square bg-[#272628]
-           text-[#F6F4F0] text-[16px] font-Poppins-Medium flex flex-col justify-center items-center rounded-[20px]"
+              disabled={countdownStarted}
+              className={`w-[100px] aspect-square ${countdownStarted ? 'bg-[#979CA6]' : 'bg-[#272628]'}
+           text-[#F6F4F0] text-[16px] font-Poppins-Medium flex flex-col justify-center items-center rounded-[20px]`}
             >
               <span className=" leading-none">
                 Custom Session
@@ -107,23 +147,31 @@ export default function Meditate({}) {
             </button>
           </div>
           <div className="ml-[230px] w-[420px] flex flex-col items-center">
-            <div className="flex justify-center relative">
-              <img
-                className="w-[350px] h-[350px]"
-                src={meditationTimer}
-                alt=""
-              />
+            <div className="flex justify-center relative bg-transparent">
+              <div className="w-[350px] h-[350px] rounded-full  relative
+              border-[#4DA1A9] border-[35px] border-solid">
+                <svg
+                  className="absolute left-[-40px] rotate-[60deg] top-[-41px]"
+                  width={"360px"} height={"360px"}>
+                  <motion.circle
+                    animate={controls}
+                    cx={"50%"} cy={"50%"} r={157}
+                    strokeDasharray={1000} strokeDashoffset={pathWidth} strokeLinecap="round"
+
+                    stroke="#79D7BE"
+                    strokeWidth={"37px"} fill="none" />
+                </svg>
+              </div>
               <img
                 className="w-[400px] h-[400px] absolute top-[70px] left-1/2 -translate-x-1/2"
                 src={meditatingPerson}
                 alt=""
               />
             </div>
-
             <CountdownTimer sessionName={sessionName} remainingSeconds={remainingSeconds} />
             <TimerControlButtons remainingSeconds={remainingSeconds} setRemainingSeconds={setRemainingSeconds} timerDuration={timerDuration}
               setCountdownStarted={setCountdownStarted} countdownStarted={countdownStarted} intervalRef={intervalRef}
-              isPaused={isPaused} setIsPaused={setIsPaused} sendDurationToDB={sendDurationToDB}></TimerControlButtons>
+              isPaused={isPaused} setIsPaused={setIsPaused} sendDurationToDB={sendDurationToDB} isDisabled={isDisabled}></TimerControlButtons>
           </div>
         </div>
       </BreathingMeditateLayout>
@@ -144,6 +192,7 @@ function FixedSessionButton({
   setTimerDuration,
   setRemainingSeconds,
   setSessionName,
+  countdownStarted
 }) {
   return (
     <button
@@ -152,9 +201,10 @@ function FixedSessionButton({
         setRemainingSeconds(duration * 60);
         setSessionName(title)
       }}
+      disabled={countdownStarted}
       type="button"
-      className="w-[100px] aspect-square bg-[#272628]
-           text-[#F6F4F0] text-[16px] font-Poppins-Medium flex flex-col justify-start items-center rounded-[20px]"
+      className={`w-[100px] aspect-square ${countdownStarted ? 'bg-[#979CA6]' : ' bg-[#272628]'}
+           text-[#F6F4F0] text-[16px] font-Poppins-Medium flex flex-col justify-start items-center rounded-[20px]`}
     >
       <span className="mt-[20px] leading-none">{title}</span>
       <span className="font-Poppins-Regular mt-[12px] leading-none">
@@ -164,8 +214,8 @@ function FixedSessionButton({
   );
 }
 
-function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDuration,remainingSeconds, setRemainingSeconds, isPaused, setIsPaused, intervalRef,sendDurationToDB }) {
-  
+function TimerControlButtons({ setCountdownStarted, isDisabled,countdownStarted, timerDuration, remainingSeconds, setRemainingSeconds, isPaused, setIsPaused, intervalRef, sendDurationToDB }) {
+
   return (
     <>
       {countdownStarted ? (
@@ -179,7 +229,7 @@ function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDurat
 
                   setRemainingSeconds((prevSeconds) => {
                     if (prevSeconds <= 1) {
-                      sendDurationToDB(prevSeconds -1)
+                      sendDurationToDB(prevSeconds - 1)
                       clearInterval(intervalRef.current);
                       setCountdownStarted(false);
                       return timerDuration;
@@ -206,9 +256,10 @@ function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDurat
           )}
           <button
             onClick={() => {
-              sendDurationToDB( remainingSeconds)
+              sendDurationToDB(remainingSeconds)
               setCountdownStarted(false)
               setRemainingSeconds(timerDuration)
+              
             }}
             type="button">
 
@@ -220,9 +271,10 @@ function TimerControlButtons({ setCountdownStarted, countdownStarted, timerDurat
           onClick={() => {
             setCountdownStarted(true)
           }}
+          disabled={isDisabled}
           type="button"
-          className="mt-[40px] w-[250px] h-[60px] text-[#272628] rounded-[15px]
-              bg-[#79D7BE] font-Poppins-SemiBold text-[32px]"
+          className={`mt-[40px] w-[250px] h-[60px] text-[#272628] rounded-[15px]
+              ${isDisabled?'bg-[#D9D9D9]':'bg-[#79D7BE]'} font-Poppins-SemiBold text-[32px]`}
         >
           Start
         </button>

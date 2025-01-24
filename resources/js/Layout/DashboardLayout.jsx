@@ -37,7 +37,7 @@ export default function DashboardLayout({ children, type }) {
 }
 
 function DashboardNavButtons({ route, currentType }) {
-  const navRouteArray = ["home", "learn.show", "meditate.show", "breathing.show", "home"];
+  const navRouteArray = ["home", "learn.show", "meditate.show", "breathing.show", "account.show"];
   const navImgSrcArray = [
     {
       default: navDashboardHomeIcon,
@@ -61,8 +61,7 @@ function DashboardNavButtons({ route, currentType }) {
     },
   ];
   const buttonNamesArray = ["Dashboard/Dashboard", "Dashboard/Learn/Learn", ["Dashboard/Meditate/Meditate",'Dashboard/Breathing/Breathing',
-    'Dashboard/Breathing/BreathingList'], "music", "account"];
-
+    'Dashboard/Breathing/BreathingList'], "music", "Dashboard/Account/Account"];
   return (
     <>
       <Link

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exercise;
+use App\Models\Meditation;
+use App\Models\UserExercise;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
@@ -112,6 +116,31 @@ class ExerciseController extends Controller
         $exerciseData = Exercise::where('id',$fields['id'])->get();
         Session::put('exerciseData',$exerciseData[0]);
         return redirect(route('breathing.panel')); 
+    }
+
+    public function storeOrUpdate(Request $request){
+        $request->validate([
+        'exercise_id' => 'required|integer',
+        ]);
+
+        $user_id =  Auth::user()->id;
+        $exercise_id = $request['exercise_id'] ;
+        $exercisedToday =  UserExercise::where('user_id',$user_id)
+        ->where('exercise_id',$exercise_id)
+        ->whereDate('created_at',Carbon::today());
+
+        if($exercisedToday->exists()){
+            $previousCount = (int) $exercisedToday->pluck('count')[0];
+            $exercisedToday->update(['count'=>($previousCount + 1)]);
+        }else{
+            UserExercise::create([
+                'user_id' => $user_id,
+                'exercise_id' => $exercise_id,
+                'count' => 1,
+            ]);
+        }
+
+        return;
     }
 
 

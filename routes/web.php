@@ -46,11 +46,18 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/breathing/panel', function () {
       return inertia('Dashboard/Breathing/Breathing', [
           'exerciseData' => Session::get('exerciseData'),
-      ]);
-
-      
-  })->name('breathing.panel');
+          'auth' => Auth::user(),
+      ]);})->name('breathing.panel');
+  Route::post('/breathing/store',[ExerciseController::class, 'storeOrUpdate'])->name('breathing.store');
   Route::inertia('/breathing/list','Dashboard/Breathing/BreathingList',[
     "breathingList" => ExerciseController::getBreathingList(),
   ])->name('breathing.show');
+
+
+  Route::get('/account', function () {
+      return inertia('Dashboard/Account/Account', [
+        'auth' => Auth::user(),
+      ]);})->name('account.show');
+  
+
 });

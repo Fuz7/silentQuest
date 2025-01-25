@@ -12,14 +12,21 @@ import navDashboardLogoutIcon from "@images/dashboard/layout/navDashboardLogoutI
 import navDashboardLogo from "@images/dashboard/layout/navDashboardLogo.svg";
 import { Link, useForm } from "@inertiajs/react";
 import { useRoute } from "@vendor/tightenco/ziggy";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { img } from "motion/react-client";
+import MusicPlayer from "./MusicPlayer.jsx";
 
-export default function DashboardLayout({ children, type }) {
+export default function DashboardLayout({ children, type, }) {
   const route = useRoute();
+  const [music,setMusic] = useState(false)
+  useEffect(()=>{
 
-  const sad = useMemo(function(){
-    console.log("sad")
-  },[type])
+    fetch('/music')
+    .then(response => response.json())
+    .then(data => {
+      setMusic(data['da'])
+    })
+  },[])
   return (
     <>
       <main className="min-h-[100vh] flex bg-[#F6F4F0]">
@@ -31,6 +38,7 @@ export default function DashboardLayout({ children, type }) {
         </header>
         <div className="min-w-[160px]"></div>
         <section className="flex relative">{children}</section>
+        <MusicPlayer music={music}/>
       </main>
     </>
   );

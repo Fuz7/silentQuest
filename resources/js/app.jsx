@@ -9,7 +9,8 @@ createInertiaApp({
     const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
         let page = pages[`./Pages/${name}.jsx`];
 
-    page.default.layout = name.startsWith('Dashboard/')?page => <DashboardLayout type={name}>{page}</DashboardLayout>:null;
+    page.default.layout = name.startsWith('Dashboard/')?page => 
+    <DashboardLayout type={name}>{page}</DashboardLayout>:null;
 
     return pages[`./Pages/${name}.jsx`]
   },

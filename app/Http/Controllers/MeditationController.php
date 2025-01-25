@@ -57,9 +57,10 @@ class MeditationController extends Controller
     }
     public static function getTotalMeditationTimeToday(){
       $user = Auth::user();
-      $meditationTime = Meditation::where('user_id',$user['id'])
+      $meditation = Meditation::where('user_id',$user['id'])
                                   ->whereDate('created_at',Carbon::today())
-                                  ->first()['duration'];
+                                  ->first();
+      $meditationTime = $meditation['duration'] ?? "00:00:00";
       $dateFormat = Carbon::createFromFormat('H:i:s',$meditationTime);
       $parts = explode(':', $dateFormat);
       $hour = (int)substr($parts[0],-2); 

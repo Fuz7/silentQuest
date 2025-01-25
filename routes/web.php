@@ -5,10 +5,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MeditationController;
+use App\Http\Controllers\MusicController;
 use App\Models\Exercise;
+use App\Models\Music;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 // Route::get('/login',function(){
   //     return inertia('Auth/Login');
@@ -26,6 +29,14 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+  
+  Route::get('/music',function(){
+    $music = [asset('storage/music/Soft Thunder and Rain.mp3'),
+            asset('storage/music/Calm Temple Flute.mp3')];
+    return  json_encode(['da'=>$music]);
+  })  ;
+
+
   Route::get('/dashboard', function () {
       return inertia('Dashboard/Dashboard', [
           'auth' => Auth::user(),
@@ -37,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
           'exerciseCount' => ExerciseController::getUserTotalExerciseCountToday(),
           'meditationTime' => MeditationController::getTotalMeditationTimeToday(),
 
-      ]);
+        ]);
   })->name('home');
  
   Route::inertia('/learn','Dashboard/Learn/Learn')->name('learn.show');

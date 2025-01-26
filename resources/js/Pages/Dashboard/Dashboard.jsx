@@ -14,7 +14,7 @@ import { Link } from '@inertiajs/react'
 import { useRoute } from "@vendor/tightenco/ziggy";
 
 
-export default function Dashboard({ auth, date,level,exerciseCount,meditationTime }) {
+export default function Dashboard({ auth, date,level,exerciseCount,meditationTime,music }) {
   const route = useRoute();
   const {title,exp} = level
   return (<>
@@ -27,7 +27,7 @@ export default function Dashboard({ auth, date,level,exerciseCount,meditationTim
             <ExerciseCard exerciseCount={exerciseCount} />
             <QuoteCard />
             <MeditationTimeCard meditationTime={meditationTime} />
-            <MusicTimeCard />
+            <MusicTimeCard music={music} />
             <KnowMoreCard />
           </div>
         </div>
@@ -156,7 +156,7 @@ function MeditationTimeCard({meditationTime}) {
   )
 }
 
-function MusicTimeCard() {
+function MusicTimeCard({music}) {
   return (
     <div
 
@@ -170,7 +170,7 @@ function MusicTimeCard() {
       </div>
 
       <p className='ml-[10px] mt-[35px] text-[50px] text-white leading-none'>
-        00:00:00</p>
+        {music}</p>
 
     </div>
   )

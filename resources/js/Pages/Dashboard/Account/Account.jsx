@@ -1,4 +1,4 @@
-export default function Account({ auth, meditationTime, exercise, level }) {
+export default function Account({ auth, meditationTime, exercise, level,music }) {
 
   function getTotalCount(count) {
     return (count.beginner + count.intermediate + count.advance)
@@ -31,7 +31,7 @@ export default function Account({ auth, meditationTime, exercise, level }) {
             <p className="font-Poppins-Regular text-[20px] text-[#979CA6] leading-none">Meditation Time</p>
           </div>
           <div className="flex flex-col gap-[15px]">
-            <p className="font-Poppins-SemiBold text-[32px] text-[#272628] leading-none">00h 00m 00s</p>
+            <p className="font-Poppins-SemiBold text-[32px] text-[#272628] leading-none">{music}</p>
             <p className="font-Poppins-Regular text-[20px] text-[#979CA6] leading-none">Music Time</p>
           </div>
         </div>

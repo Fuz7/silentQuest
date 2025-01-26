@@ -193,8 +193,44 @@ class MusicController extends Controller
 
         return true;
     }
+
+    public static function getTotalMusicTime(){
+        $user = Auth::user();
+        $musics = UserMusic::where('user_id',$user['id'])
+                                 ->get();
+        $date = Carbon::now()->startOfDay();  // Outputs: 2024-01-24 00:00:00
+        foreach ($musics as $music) {
+            # code...
+          $meditationTime = abs(Carbon::createFromFormat('H:i:s',$music['duration'])
+                                    ->diffInSeconds(Carbon::today()->startOfDay()));
+          $date->addSeconds($meditationTime);   
+        }
+
+
+        $formattedTime = $date->format('H\h i\m s\s');
+        return($formattedTime);
+
+    }
     
 
+    public static function getTotalMusicTimeToday(){
+        $user = Auth::user();
+        $musics = UserMusic::where('user_id',$user['id'])
+                             ->whereDate('created_at',Carbon::today())
+                                 ->get();
+        $date = Carbon::now()->startOfDay();  // Outputs: 2024-01-24 00:00:00
+        foreach ($musics as $music) {
+            # code...
+          $meditationTime = abs(Carbon::createFromFormat('H:i:s',$music['duration'])
+                                    ->diffInSeconds(Carbon::today()->startOfDay()));
+          $date->addSeconds($meditationTime);   
+        }
+
+
+        $formattedTime = $date->format('H:i:s');
+        return($formattedTime);
+
+    }
 }
 
 

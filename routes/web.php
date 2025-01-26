@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
                     'exp'=>LevelController::getTotalExpToday()],
           'exerciseCount' => ExerciseController::getUserTotalExerciseCountToday(),
           'meditationTime' => MeditationController::getTotalMeditationTimeToday(),
+          'music' => MusicController::getTotalMusicTimeToday(),
         ]);
   })->name('home');
  
@@ -87,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
       'level' => ['title'=>LevelController::getUserTitle(),
                   'exp' =>LevelController::getTotalExp(),
                   'expNeeded'=>LevelController::getExpNeeded()],
+      'music' => MusicController::getTotalMusicTime(),
       ]);})->name('account.show');
   
 

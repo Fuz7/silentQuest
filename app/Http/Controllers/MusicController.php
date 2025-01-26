@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Meditation;
 use App\Models\Music;
+use App\Models\UserMusic;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MusicController extends Controller
 {
@@ -105,9 +109,91 @@ class MusicController extends Controller
         ]);
     }
 
-    public static function getMostPlayedMusic(){
+    public function getMostPlayedMusic(Request $request){
+        $user_id = Auth::user()->id;
         
+        $userMostMusicPlayed = UserMusic::where("user_id",$user_id)
+                                      ->orderBy('duration','desc')
+                                      ->first();
+        if($userMostMusicPlayed !==null){
+            $mostPlayedMusicId = $userMostMusicPlayed['music_id'];
+            $mostPlayedMusic = Music::where("id",$mostPlayedMusicId)
+                                      ->first();
+            $mostPlayedMusic['image'] = "storage/images/{$mostPlayedMusic['name']}.jpg";
+            $mostPlayedMusic['audio'] = "storage/music/{$mostPlayedMusic['name']}.mp3";
+ 
+            return(json_encode(['mostPlayed'=>$mostPlayedMusic]));
+        }else{
+            $randomMusic = Music::inRandomOrder()->first();
+            $randomMusic['image'] = "storage/images/{$randomMusic['name']}.jpg";
+            $randomMusic['audio'] = "storage/music/{$randomMusic['name']}.mp3";
+            return(json_encode(['mostPlayed'=>$randomMusic]));
+        }
     }
+
+    public function getRandomMusic(Request $request){
+        $idArray = $request->idArray;
+        $randomMusic = Music::whereNotIn('id',$idArray)
+                              ->inRandomOrder()
+                              ->first();
+
+        if(!$randomMusic){
+            return(false);
+        }
+        $randomMusic['image'] = "storage/images/{$randomMusic['name']}.jpg";
+        $randomMusic['audio'] = "storage/music/{$randomMusic['name']}.mp3";
+        return(['randomMusic'=>$randomMusic]);
+    }
+
+    public function getFiveRandomMusic(Request $request){
+        
+        $fiveMusic = Music::inRandomOrder()
+                            ->limit(5)
+                            ->get();
+        foreach($fiveMusic as $music){
+        $music['image'] = "storage/images/{$music['name']}.jpg";
+        $music['audio'] = "storage/music/{$music['name']}.mp3";
+            
+        }
+        return($fiveMusic);
+    }    
+
+    public static function getAllRandomizedMusic(){
+        $randomMusics = Music::inRandomOrder()
+                               ->get();
+        foreach($randomMusics as $music){
+            $music['image'] = "storage/images/{$music['name']}.jpg";
+            $music['audio'] = "storage/music/{$music['name']}.mp3";
+        }
+        return($randomMusics);
+    }
+
+    public function storeUserMusicDuration(Request $request){
+   
+        $user_id = Auth::user()->id;    
+        $duration = $request['duration'];
+        $musicId = $request['musicId'];
+        $playedMusicToday = UserMusic::where('user_id',$user_id)
+                                       ->where('music_id',$musicId)
+                                       ->whereDate('created_at',Carbon::today());
+
+        if($playedMusicToday->exists()){
+          $previousDurationString = $playedMusicToday->pluck('duration')[0];
+          $totalTime = Carbon::createFromFormat('H:i:s', $previousDurationString)->addSeconds($duration);
+          $formattedTime = $totalTime->format('H:i:s');
+          $playedMusicToday->update(['duration'=>$formattedTime]);  
+        }else{
+            $time = Carbon::createFromTimestamp($duration);
+            UserMusic::create([
+                'user_id'=>$user_id,
+                'music_id'=>$musicId,
+                'duration'=>$time,
+            ]);
+        }
+
+        return true;
+    }
+    
 
 }
 

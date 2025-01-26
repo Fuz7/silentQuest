@@ -93,7 +93,7 @@ function ExperienceCard({title,exp}) {
         style={{
           backgroundImage: `url(${dashboardExperienceBackground})`
         }}
-        className={`w-[320px] h-[170px] pl-[30px] pt-[30px] flex flex-col
+        className={`w-[320px] h-[170px] pl-[30px] pt-[30px] flex flex-col overflow-hidden rounded-[20px]
             `}>
         <h4 className='font-Poppins-Medium text-[26px] max-w-[260px] text-white leading-none'>
           {title}</h4>
@@ -127,7 +127,7 @@ function QuoteCard() {
         style={{
           backgroundImage: `url(${dashboardQuoteBackground})`
         }}
-        className={`w-[430px] h-[170px] pl-[30px] pt-[30px] flex flex-col
+        className={`w-[430px] h-[170px] pl-[30px] pt-[30px] flex flex-col rounded-[20px]
             `}>
         <p className='font-Poppins-Regular text-[20px] max-w-[364px] text-white leading-none'>
           "Meditation is a lifelong gift.

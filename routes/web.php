@@ -36,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
     return  json_encode(['da'=>$music]);
   })  ;
 
+  Route::get('/music/mostPlayed',[MusicController::class,'getMostPlayedMusic'],);
+  Route::get('/music/randomMusic/fetch', [MusicController::class, 'getRandomMusic']);
+  Route::get('/music/randomMusic/fetchFive', [MusicController::class, 'getFiveRandomMusic']);
 
   Route::get('/dashboard', function () {
       return inertia('Dashboard/Dashboard', [
@@ -47,11 +50,15 @@ Route::middleware(['auth'])->group(function () {
                     'exp'=>LevelController::getTotalExpToday()],
           'exerciseCount' => ExerciseController::getUserTotalExerciseCountToday(),
           'meditationTime' => MeditationController::getTotalMeditationTimeToday(),
-
         ]);
   })->name('home');
  
   Route::inertia('/learn','Dashboard/Learn/Learn')->name('learn.show');
+  Route::get('/music',function(){
+      return inertia("Dashboard/Music/Music",[
+        'randomMusics'=> MusicController::getAllRandomizedMusic(),
+      ]);
+  })->name('music.show');
   
   Route::inertia('/meditate','Dashboard/Meditate/Meditate')->name('meditate.show');
   Route::post('/meditate/store',[MeditationController::class, 'storeOrUpdate'])->name('meditate.store');
@@ -59,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
   // Route::post('/meditate/store',[ExerciseController::class,'createBreathingExercise'])->name('meditate.store');
 
   Route::post('/breathing/goto',[ExerciseController::class, 'gotoExercisePanel'])->name('breathing');
+  Route::post('/userMusic/store',[MusicController::class, 'storeUserMusicDuration']);
 
   Route::get('/breathing/panel', function () {
       return inertia('Dashboard/Breathing/Breathing', [

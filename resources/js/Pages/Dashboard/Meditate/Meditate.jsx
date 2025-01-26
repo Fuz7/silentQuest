@@ -79,7 +79,7 @@ export default function Meditate({ }) {
       }
     })
     return () => removeEventListener('beforeunload', mounted)
-  }, [countdownStarted, countdownStarted, remainingSeconds])
+  }, [countdownStarted,  remainingSeconds])
 
   useEffect(() => {
     if (countdownStarted && timerDuration === remainingSeconds) {

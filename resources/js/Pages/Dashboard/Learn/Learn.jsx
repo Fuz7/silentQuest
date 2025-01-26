@@ -54,8 +54,8 @@ export default function Learn() {
         "https://awakeandmindful.com/free-guided-meditations-to-relieve-stress/",
     ];
     return (
-        <div className="flex flex-col mt-[60px] gap-[58px] ml-[60px]">
-            <h2 className="font-Poppins-Medium text-[32px] text-black">
+        <div className="flex flex-col mt-[60px] gap-[58px] max-w-[1200px] ml-[60px]">
+            <h2 className="font-Poppins-Medium text-[32px] text-[#2E5077]">
                 Discover Guided Meditation
             </h2>
             <div className="flex flex-wrap gap-[45px] gap-y-[25px] max-w-[1500px]">

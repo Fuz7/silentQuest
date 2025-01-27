@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Storage;
   Route::post('/logout',[AuthController::class, 'logout'])->name('auth.logout');
   
 Route::middleware(['guest'])->group(function () {
-  Route::inertia('/','Home/Home')->middleware('guest');
+  Route::inertia('/','Landing/Landing')->middleware('guest');
   Route::inertia('/login','Auth/Login')->name('login');
   Route::inertia('/register','Auth/Register')->name('register.show');
 });

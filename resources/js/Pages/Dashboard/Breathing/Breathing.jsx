@@ -22,7 +22,7 @@ export default function Breathing({ exerciseData}) {
   const {post} = useForm({
     exercise_id:exerciseData.id,
   })
-
+  
   function submitUserExercise(){
     post(route('breathing.store'))
   }

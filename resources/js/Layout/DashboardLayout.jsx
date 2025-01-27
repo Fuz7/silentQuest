@@ -144,7 +144,7 @@ function DashboardNavButtons({ route, currentType }) {
             "Dashboard/Breathing/Breathing",
             "Dashboard/Breathing/BreathingList",
         ],
-        "music",
+        "Dashboard/Music/Music",
         "Dashboard/Account/Account",
     ];
     return (

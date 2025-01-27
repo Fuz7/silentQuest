@@ -1,9 +1,9 @@
 import { Link } from "@inertiajs/react"
-import navHomeIcon from '@images/home/navHomeIcon.svg'
-import navAccountIcon from '@images/home/navAccountIcon.svg'
+import navHomeIcon from '@images/landing/navHomeIcon.svg'
+import navAccountIcon from '@images/landing/navAccountIcon.svg'
 import {useRoute} from '@vendor/tightenco/ziggy'
 
-export default function HomeLayout({children}){
+export default function LandingLayout({children}){
   const route = useRoute()
   return(
     <>

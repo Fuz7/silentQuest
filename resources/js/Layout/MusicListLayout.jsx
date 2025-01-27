@@ -15,7 +15,7 @@ export default function MusicList({musicIndex,setMusicIndex,musicQueue,
     getFiveRandomMusic()
   }, [])
   return (
-    <div className={`fixed right-0 top-0 w-[640px] h-[900px] bg-[#F6F4F0]
+    <div className={`fixed right-0 top-0 w-[660px] h-[900px] bg-[#F6F4F0]
     drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)] pt-[300px] pl-[50px] 
     flex flex-col gap-[30px] ${type ==="Dashboard/Music/Music"&&'hidden'}`}>
       {musicList.map((music, index) => {
@@ -64,7 +64,7 @@ function MusicCard({ music,musicIndex,setMusicIndex,
            bg-[#0000008a] flex justify-center items-center">
             <img src={musicListLayoutPlay} alt="" />
         </span>
-        <img className="w-full h-full object-cover" src={image} alt="" />
+        <img className="w-full h-full object-cover" src={"http://127.0.0.1:8000/"+image} alt="" />
       </button>
       <p className="font-Poppins-Regular text-[25px] text-[#272628] leading-none mt-[5px]">{name}</p>
     </div>

@@ -1,7 +1,7 @@
 
 import { Link } from "@inertiajs/react"
 import navLoginAuthIcon from '@images/auth/navLoginAuthIcon.svg'
-import navRegisterAuthIcon from '@images/home/navHomeIcon.svg'
+import navRegisterAuthIcon from '@images/landing/navHomeIcon.svg'
 export default function AuthLayout({children,type}){
   return(
     <>

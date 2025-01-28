@@ -19,12 +19,12 @@ export default function Meditate({ }) {
   const [sessionName, setSessionName] = useState('Short Session');
   const [sendToRoute, setSendToRoute] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
-  const [isDisabled,setIsDisabled] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false)
   const controls = useAnimation(); // Framer motion controls
   const originalPathWidth = 1000
   const pathWidth = useMotionValue(originalPathWidth)
-  const [isRecorded,setIsRecorded] = useState(false)
-
+  const [isRecorded, setIsRecorded] = useState(false)
+  
   useEffect(() => {
     if (countdownStarted && !isPaused) {
       controls.start({
@@ -36,9 +36,9 @@ export default function Meditate({ }) {
       });
     } else if (isPaused) {
       controls.stop(); // Pauses animation
-    }else if(!countdownStarted && remainingSeconds === timerDuration &&isRecorded){
+    } else if (!countdownStarted && remainingSeconds === timerDuration && isRecorded) {
       controls.start({
-        strokeDashoffset: originalPathWidth,  
+        strokeDashoffset: originalPathWidth,
         transition: {
           duration: 1,
           ease: "linear",
@@ -49,10 +49,10 @@ export default function Meditate({ }) {
       setTimeout(() => {
         setIsDisabled(false)
       }, 1000);
-   
-      
+
+
     }
-  }, [countdownStarted, isPaused, remainingSeconds, controls,isRecorded]);
+  }, [countdownStarted, isPaused, remainingSeconds, controls, isRecorded]);
 
   const intervalRef = useRef(null);
   const { data, setData, post } = useForm({
@@ -79,7 +79,7 @@ export default function Meditate({ }) {
       }
     })
     return () => removeEventListener('beforeunload', mounted)
-  }, [countdownStarted,  remainingSeconds])
+  }, [countdownStarted, remainingSeconds])
 
   useEffect(() => {
     if (countdownStarted && timerDuration === remainingSeconds) {
@@ -169,7 +169,9 @@ export default function Meditate({ }) {
               />
             </div>
             <CountdownTimer sessionName={sessionName} remainingSeconds={remainingSeconds} />
-            <TimerControlButtons remainingSeconds={remainingSeconds} setRemainingSeconds={setRemainingSeconds} timerDuration={timerDuration}
+            <TimerControlButtons remainingSeconds={remainingSeconds}  setIsRecorded={setIsRecorded}
+            controls={controls} setIsDisabled={setIsDisabled}
+             setRemainingSeconds={setRemainingSeconds} timerDuration={timerDuration}
               setCountdownStarted={setCountdownStarted} countdownStarted={countdownStarted} intervalRef={intervalRef}
               isPaused={isPaused} setIsPaused={setIsPaused} sendDurationToDB={sendDurationToDB} isDisabled={isDisabled}></TimerControlButtons>
           </div>
@@ -214,7 +216,10 @@ function FixedSessionButton({
   );
 }
 
-function TimerControlButtons({ setCountdownStarted, isDisabled,countdownStarted, timerDuration, remainingSeconds, setRemainingSeconds, isPaused, setIsPaused, intervalRef, sendDurationToDB }) {
+function TimerControlButtons({ setCountdownStarted, controls, setIsRecorded,
+  setIsDisabled,
+  isDisabled, countdownStarted, timerDuration, remainingSeconds,
+   setRemainingSeconds, isPaused, setIsPaused, intervalRef, sendDurationToDB }) {
 
   return (
     <>
@@ -256,10 +261,23 @@ function TimerControlButtons({ setCountdownStarted, isDisabled,countdownStarted,
           )}
           <button
             onClick={() => {
+              controls.start({
+                strokeDashoffset: 1000,
+                transition: {
+                  duration: 1,
+                  ease: "linear",
+                },
+              });
+              setIsRecorded(false)
+              setIsDisabled(true)
+              setTimeout(() => {
+                setIsDisabled(false)
+              }, 1000);
+
               sendDurationToDB(remainingSeconds)
               setCountdownStarted(false)
               setRemainingSeconds(timerDuration)
-              
+
             }}
             type="button">
 
@@ -274,7 +292,7 @@ function TimerControlButtons({ setCountdownStarted, isDisabled,countdownStarted,
           disabled={isDisabled}
           type="button"
           className={`mt-[40px] w-[250px] h-[60px] text-[#272628] rounded-[15px]
-              ${isDisabled?'bg-[#D9D9D9]':'bg-[#79D7BE]'} font-Poppins-SemiBold text-[32px]`}
+              ${isDisabled ? 'bg-[#D9D9D9]' : 'bg-[#79D7BE]'} font-Poppins-SemiBold text-[32px]`}
         >
           Start
         </button>

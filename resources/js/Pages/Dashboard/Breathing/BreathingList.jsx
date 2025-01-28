@@ -6,7 +6,7 @@ import closeButton from '@images/dashboard/breathing/closeButton.svg'
 import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { useRoute } from "@vendor/tightenco/ziggy";
-export default function BreathingList({ breathingList, }) {
+export default function BreathingList({ breathingList,exp }) {
 
   const { data, setData, post } = useForm({
     id: null,
@@ -15,7 +15,6 @@ export default function BreathingList({ breathingList, }) {
   const [intermediateVisible, setIntermediateVisible] = useState(false)
   const [advanceVisible, setAdvanceVisible] = useState(false)
   const [isHidden,setIsHidden] = useState(true)
-  const exp = 400
   const INTERMEDIATE_EXP_REQUIRED = 500
   const ADVANCE_EXP_REQUIRED = 1500
   const [requiredExp,setRequiredExp] = useState(0)

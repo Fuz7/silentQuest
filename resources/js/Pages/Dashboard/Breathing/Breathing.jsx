@@ -175,11 +175,11 @@ export default function Breathing({ exerciseData}) {
           }
         }
       }
-      if (!animationStarted && cycle < exerciseData.cycle) {
+      if (!animationStarted && cycle < 1) {
         setCycle(cycle + 1)
         triggerAnimation(0)
         setAnimationStarted(true)
-      } else if (!animationStarted && cycle === exerciseData.cycle) {
+      } else if (!animationStarted && cycle === 1) {
         animate(".circleOrigin", {
           scale: 1,
           translateX: ['-50%', '-50%'], translateY: ['-50%', '-50%']

@@ -206,7 +206,7 @@ class MusicController extends Controller
           $date->addSeconds($meditationTime);   
         }
 
-
+        
         $formattedTime = $date->format('H\h i\m s\s');
         return($formattedTime);
 
@@ -221,9 +221,9 @@ class MusicController extends Controller
         $date = Carbon::now()->startOfDay();  // Outputs: 2024-01-24 00:00:00
         foreach ($musics as $music) {
             # code...
-          $meditationTime = abs(Carbon::createFromFormat('H:i:s',$music['duration'])
+          $musicTime = abs(Carbon::createFromFormat('H:i:s',$music['duration'])
                                     ->diffInSeconds(Carbon::today()->startOfDay()));
-          $date->addSeconds($meditationTime);   
+          $date->addSeconds($musicTime);   
         }
 
 

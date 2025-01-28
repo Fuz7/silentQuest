@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\DateHelper;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LevelController;
@@ -75,21 +76,30 @@ Route::middleware(['auth'])->group(function () {
           'auth' => Auth::user(),
       ]);})->name('breathing.panel');
   Route::post('/breathing/store',[ExerciseController::class, 'storeOrUpdate'])->name('breathing.store');
-  Route::inertia('/breathing/list','Dashboard/Breathing/BreathingList',[
+  Route::get('/breathing/list',function(){
+    return inertia('Dashboard/Breathing/BreathingList',[
   "breathingList" => ExerciseController::getBreathingList(),
-  ])->name('breathing.show');
+  "exp" => LevelController::getTotalExp(),
+    ]);}
+  )->name('breathing.show');
     
   
   Route::get('/account', function () {
     return inertia('Dashboard/Account/Account', [
-      'auth' => Auth::user(),
-      'meditationTime' => MeditationController::getTotalMeditationTime(),
-      'exercise' => ['count' => ExerciseController::getUserTotalExerciseCount(),],
-      'level' => ['title'=>LevelController::getUserTitle(),
+      'lifetimeAuth' => Auth::user(),
+      'lifetimeMeditationTime' => MeditationController::getTotalMeditationTime(),
+      'lifetimeExercise' => ['count' => ExerciseController::getUserTotalExerciseCount(),],
+      'lifetimeLevel' => ['title'=>LevelController::getUserTitle(),
                   'exp' =>LevelController::getTotalExp(),
                   'expNeeded'=>LevelController::getExpNeeded()],
-      'music' => MusicController::getTotalMusicTime(),
+      'lifetimeMusicTime' => MusicController::getTotalMusicTime(),  
       ]);})->name('account.show');
   
+  Route::get('/account/latestDate',[AccountController::class, 'getLatestDateActivity']);
+  Route::get('/account/getDataByDate',[AccountController::class, 'getDataByDate']);
+  Route::get('/account/getAvailableYears',[AccountController::class, 'getAllUniqueYears']);
+  Route::get('/account/getMonthsByYear',[AccountController::class,'getMonthsByYear']);
+  Route::get('/account/getDaysByMonthAndYear',
+  [AccountController::class,'getDaysByMonthAndYear']);
 
 });

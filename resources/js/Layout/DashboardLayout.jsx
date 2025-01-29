@@ -80,7 +80,7 @@ export default function DashboardLayout({ children, type }) {
                         })
                         : children}
                 </section>
-                {/* <MusicListLayout
+                <MusicListLayout
                     musicIndex={musicIndex}
                     setMusicIndex={setMusicIndex}
                     musicQueue={musicQueue}
@@ -89,18 +89,18 @@ export default function DashboardLayout({ children, type }) {
                     audioRef={audioRef}
                     setIsPaused={setIsPaused}
                     saveUserMusicTime={saveUserMusicTime}
-                ></MusicListLayout> */}
-                    {/* <MusicPlayer
-                        saveUserMusicTime={saveUserMusicTime}
-                        musicQueue={musicQueue}
-                        setMusicQueue={setMusicQueue}
-                        isPaused={isPaused}
-                        setIsPaused={setIsPaused}
-                        audioRef={audioRef}
-                        musicIndex={musicIndex}
-                        setMusicIndex={setMusicIndex}
-                        stopWatch={stopWatch}
-                    /> */}
+                ></MusicListLayout>
+                <MusicPlayer
+                    saveUserMusicTime={saveUserMusicTime}
+                    musicQueue={musicQueue}
+                    setMusicQueue={setMusicQueue}
+                    isPaused={isPaused}
+                    setIsPaused={setIsPaused}
+                    audioRef={audioRef}
+                    musicIndex={musicIndex}
+                    setMusicIndex={setMusicIndex}
+                    stopWatch={stopWatch}
+                />
             </main>
         </>
     );

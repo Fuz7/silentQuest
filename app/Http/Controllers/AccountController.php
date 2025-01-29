@@ -198,7 +198,7 @@ class AccountController extends Controller{
       $year = $request->year;
       $month = $request->month;
 
-  
+      
     $musicDays = UserMusic::where('user_id', $user_id)
         ->whereYear('created_at', $year)
         ->whereMonth('created_at', $month)

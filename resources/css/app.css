@@ -53,3 +53,27 @@ body{
 .musicList:hover > span{
   visibility: visible;
 }
+
+.accountDateList{
+  scrollbar-gutter: stable;
+}
+
+.accountDateList::-webkit-scrollbar{
+  width: 10px;
+  background-color: #CCCCCC;
+  position: absolute;
+  right: 0px;
+}
+
+.accountDateList::-webkit-scrollbar-button{
+  display: block;
+  background: #CCCCCC;
+  height: 1px;
+}
+
+.accountDateList::-webkit-scrollbar-thumb{
+  border-left: 2px solid #CCCCCC ;
+  border-right: 2px solid #CCCCCC;
+  background-color: #4DA1A9;
+  border-radius: 70px;
+}

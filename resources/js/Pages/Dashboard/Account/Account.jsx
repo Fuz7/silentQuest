@@ -2,6 +2,8 @@ import calendarIcon from '@images/dashboard/account/calendarIcon.svg'
 import datePointer from '@images/dashboard/account/datePointer.svg'
 import axios from 'axios'
 import { useState } from 'react'
+import { getMonthNameFromNumber, getMonthNumber } from '../../../utils'
+import { datalist, div, param } from 'motion/react-client'
 
 export default function Account({ lifetimeAuth, lifetimeMeditationTime,
   lifetimeExercise, lifetimeLevel,
@@ -14,8 +16,23 @@ export default function Account({ lifetimeAuth, lifetimeMeditationTime,
   const [category, setCategory] = useState('lifetime')
   const [currentYear, setCurrentYear] = useState(2025);
   const [currentMonth, setCurrentMonth] = useState('January')
-  const [currentDay, setCurrentDay] = useState(1)
+  const [currentDay, setCurrentDay] = useState(12)
   const [clickedDropdown, setClickedDropDown] = useState(null)
+  const [yearList, setYearList] = useState([])
+  const [monthList, setMonthList] = useState([])
+  const [dayList, setDayList] = useState([])
+
+  const dateList = {
+    yearList,
+    monthList,
+    dayList
+  }
+
+  const setDateList = {
+    setYearList,
+    setMonthList,
+    setDayList
+  }
 
   const lifetimeData = {
     lifetimeAuth,
@@ -52,9 +69,12 @@ export default function Account({ lifetimeAuth, lifetimeMeditationTime,
         <div className="flex justify-between mb-[30px] z-20">
           <ToggleButtonSection category={category} setCategory={setCategory}
             setterDataObj={setterDataObj} setClickedDropDown={setClickedDropDown}
+            setDateList={setDateList}
             setterCurrentDate={setterCurrentDate} lifetimeData={lifetimeData} />
           <DateButtonSection currentDate={currentDate} category={category}
-            clickedDropdown={clickedDropdown} setClickedDropDown={setClickedDropDown} />
+            clickedDropdown={clickedDropdown} setClickedDropDown={setClickedDropDown}
+            dateList={dateList} setDateList={setDateList} setterDataObj={setterDataObj}
+            setterCurrentDate={setterCurrentDate} />
         </div>
         <AccumulatedCard exercise={exercise}
           meditationTime={meditationTime} musicTime={musicTime} />
@@ -168,8 +188,13 @@ function LevelUpCard({ level }) {
 }
 
 function ToggleButtonSection({ category, setCategory, setterCurrentDate, lifetimeData,
-  setterDataObj, setClickedDropDown
+  setterDataObj, setClickedDropDown, setDateList
 }) {
+  const {
+    setYearList,
+    setMonthList,
+    setDayList
+  } = setDateList
   const {
     lifetimeAuth,
     lifetimeMeditationTime,
@@ -201,29 +226,7 @@ function ToggleButtonSection({ category, setCategory, setterCurrentDate, lifetim
       }
     })
     const cardData = cardDataResponse.data
-    const getAvailableYearsResponse = await axios.get('/account/getAvailableYears')
-    const getAvailableYears = getAvailableYearsResponse.data
-    console.log(getAvailableYears)
-    const getAvailableMonthsResponse = await axios.get('/account/getMonthsByYear', {
-      params: {
-        year: getAvailableYears[getAvailableYears.length - 1]
-      }
-    })
-    const getAvailableMonths = getAvailableMonthsResponse.data
-    console.log(getAvailableMonths)
-    const getAvailableDaysByMonthAndYearResponse =
-      await axios.get('/account/getDaysByMonthAndYear', {
-        params: {
-          year: getAvailableYears[getAvailableYears.length - 1],
-          month :getAvailableMonths[getAvailableMonths.length - 1]
-        }
-      })
-    const getAvailableDaysByMonthAndYear =
-    getAvailableDaysByMonthAndYearResponse.data
-    console.log(getAvailableDaysByMonthAndYear)
-    setCurrentYear(data.year)
-    setCurrentMonth(data.month)
-    setCurrentDay(data.day)
+    await setLatestAvailableYearMonthDay(setCurrentYear, setCurrentMonth, setCurrentDay)
     setMeditationTime(cardData.meditationTime)
     setMusicTime(cardData.musicTime)
     setExercise(cardData.exercise)
@@ -240,6 +243,39 @@ function ToggleButtonSection({ category, setCategory, setterCurrentDate, lifetim
     setClickedDropDown(null)
   }
 
+  async function setLatestAvailableYearMonthDay(
+    setCurrentYear, setCurrentMonth, setCurrentDay) {
+    const getAvailableYearsResponse = await axios.get('/account/getAvailableYears')
+    const getAvailableYears = getAvailableYearsResponse.data
+    const getAvailableMonthsResponse = await axios.get('/account/getMonthsByYear', {
+      params: {
+        year: getAvailableYears[getAvailableYears.length - 1]
+      }
+    })
+    const getAvailableMonths = getAvailableMonthsResponse.data
+    const getAvailableDaysByMonthAndYearResponse =
+      await axios.get('/account/getDaysByMonthAndYear', {
+        params: {
+          year: getAvailableYears[getAvailableYears.length - 1],
+          month: getAvailableMonths[getAvailableMonths.length - 1]
+        }
+      })
+    const getAvailableDaysByMonthAndYear =
+      getAvailableDaysByMonthAndYearResponse.data
+    const latestYear = getAvailableYears[getAvailableYears.length - 1]
+    const latestMonth =
+      getAvailableMonths[getAvailableMonths.length - 1]
+    const parsedMonthName = getMonthNameFromNumber(latestMonth)
+    const latestDay =
+      getAvailableDaysByMonthAndYear[getAvailableDaysByMonthAndYear.length - 1]
+    setCurrentYear(latestYear)
+    setCurrentMonth(parsedMonthName)
+    setCurrentDay(latestDay)
+    const monthsNameList = getAvailableMonths.map((number) => getMonthNameFromNumber(number))
+    setYearList(getAvailableYears)
+    setMonthList(monthsNameList)
+    setDayList(getAvailableDaysByMonthAndYear)
+  }
 
   return (
     <>
@@ -273,81 +309,305 @@ function ToggleButtonSection({ category, setCategory, setterCurrentDate, lifetim
   )
 }
 
-function DateButtonSection({ category, currentDate, clickedDropdown, setClickedDropDown }) {
+function DateButtonSection({ category, currentDate, clickedDropdown, setClickedDropDown,
+  dateList, setDateList, setterCurrentDate, setterDataObj
+}) {
+  const {
+    yearList,
+    monthList,
+    dayList
+  } = dateList
+  const {
+    setYearList,
+    setMonthList,
+    setDayList
+  } = setDateList
   const {
     currentYear,
     currentMonth,
     currentDay
   } = currentDate
+
+  const {
+    setCurrentYear,
+    setCurrentMonth,
+    setCurrentDay
+  } = setterCurrentDate
+
+  const {
+    setMeditationTime,
+    setExercise,
+    setLevel,
+    setMusicTime
+  } = setterDataObj
+
+  const handleYearListClick = async (year) => {
+    const getAvailableYearsResponse = await axios.get('/account/getAvailableYears')
+    const availableYears = getAvailableYearsResponse.data
+    const getAvailableMonths = await axios.get('account/getMonthsByYear', {
+      params: {
+        year: year
+      }
+    })
+    const monthsData = getAvailableMonths.data
+    const latestMonth = monthsData[monthsData.length - 1]
+    const latestMonthName = getMonthNameFromNumber(latestMonth)
+    const getAvaibleDay = await axios.get('/account/getDaysByMonthAndYear', {
+      params: {
+        year: year,
+        month: latestMonth
+      }
+    })
+    const dayData = getAvaibleDay.data
+    const latestDay = dayData[dayData.length - 1]
+    const cardDataResponse = await axios.get('/account/getDataByDate', {
+      params: {
+        year: year,
+        month: latestMonthName,
+        day: latestDay
+      }
+    })
+    const cardData = cardDataResponse.data
+    setMeditationTime(cardData.meditationTime)
+    setMusicTime(cardData.musicTime)
+    setExercise(cardData.exercise)
+    setLevel(cardData.level)
+    setCurrentYear(year)
+    setCurrentMonth(getMonthNameFromNumber(monthsData[monthsData.length - 1]))
+    setCurrentDay(dayData[dayData.length - 1])
+    const monthsNameList = monthsData.map((number) => getMonthNameFromNumber(number))
+    setYearList(availableYears)
+    setMonthList(monthsNameList)
+    setDayList(dayData)
+    setClickedDropDown(null)
+  }
+
+
+  const handleMonthClick = async (month) => {
+    const getAvailableYearsResponse = await axios.get('/account/getAvailableYears')
+    const availableYears = getAvailableYearsResponse.data
+    const getAvailableMonths = await axios.get('account/getMonthsByYear', {
+      params: {
+        year: currentYear
+      } 
+    })
+    const monthsData = getAvailableMonths.data
+    const monthNumber = getMonthNumber(month)
+    const getAvaibleDay = await axios.get('/account/getDaysByMonthAndYear', {
+      params: {
+        year: currentYear,
+        month: monthNumber,
+      }
+    })
+
+    const dayData = getAvaibleDay.data
+    const latestDay = dayData[dayData.length - 1]
+    const cardDataResponse = await axios.get('/account/getDataByDate', {
+      params: {
+        year: currentYear,
+        month: month,
+        day: latestDay
+      }
+    })
+    const cardData = cardDataResponse.data
+    setMeditationTime(cardData.meditationTime)
+    setMusicTime(cardData.musicTime)
+    setExercise(cardData.exercise)
+    setLevel(cardData.level)
+    setCurrentYear(currentYear)
+    setCurrentMonth(month)
+    setCurrentDay(dayData[dayData.length - 1])
+    const monthsNameList = monthsData.map((number) => getMonthNameFromNumber(number))
+    setYearList(availableYears)
+    setMonthList(monthsNameList)
+    setDayList(dayData)
+    setClickedDropDown(null)
+  }
+  
+  const handleDayClick = async (day) => {
+    const getAvailableYearsResponse = await axios.get('/account/getAvailableYears')
+    const availableYears = getAvailableYearsResponse.data
+    const getAvailableMonths = await axios.get('account/getMonthsByYear', {
+      params: {
+        year: currentYear
+      } 
+    })
+    const monthsData = getAvailableMonths.data
+    const latestMonth = monthsData[monthsData.length - 1]
+    const monthNumber = getMonthNumber(currentMonth)
+    const getAvaibleDay = await axios.get('/account/getDaysByMonthAndYear', {
+      params: {
+        year: currentYear,
+        month: monthNumber,
+      }
+    })
+
+    const dayData = getAvaibleDay.data
+    const cardDataResponse = await axios.get('/account/getDataByDate', {
+      params: {
+        year: currentYear,
+        month: currentMonth,
+        day: day,
+      }
+    })
+    const cardData = cardDataResponse.data
+    setMeditationTime(cardData.meditationTime)
+    setMusicTime(cardData.musicTime)
+    setExercise(cardData.exercise)
+    setLevel(cardData.level)
+    setCurrentYear(currentYear)
+    setCurrentMonth(currentMonth)
+    setCurrentDay(day)
+    const monthsNameList = monthsData.map((number) => getMonthNameFromNumber(number))
+    setYearList(availableYears)
+    setMonthList(monthsNameList)
+    setDayList(dayData)
+    setClickedDropDown(null)
+  }
+
   return (
 
     <div className={`w-[470px] h-[60px] bg-white rounded-[14px] flex gap-[5px]
           text-[#272628] ${category === 'date' ? 'visible' : 'invisible'}
           pl-[12px] py-[10px] font-Poppins-SemiBold text-[20px] items-center
           drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]`}>
-      <button
-        onClick={() => {
-          if (clickedDropdown === 'year') {
-            setClickedDropDown(null)
-          } else {
-            setClickedDropDown('year')
-          }
-        }}
-        className={`w-[100px] h-[40px] ${clickedDropdown === 'year' ? 'bg-[#2E5077] text-[#F6F4F0]'
-          : 'text-[#979CA6] hover:bg-[#F6F4F0] hover:text-[#272628]'} flex  rounded-[8px]
+      <div className='relative'>
+        <button
+          onClick={() => {
+            if (clickedDropdown === 'year') {
+              setClickedDropDown(null)
+            } else {
+              setClickedDropDown('year')
+            }
+          }}
+          className={`w-[100px] h-[40px] ${clickedDropdown === 'year' ? 'bg-[#2E5077] text-[#F6F4F0]'
+            : 'text-[#979CA6] hover:bg-[#F6F4F0] hover:text-[#272628]'} flex  rounded-[8px]
             justify-center items-center  relative`}>
-        {currentYear}
-        <span className={`flex flex-col ${clickedDropdown === 'year' ? 'visible' : 'invisible'} left-0 top-[62px] absolute  z-10 rounded-[3px]
-        w-full max-h-[210px] bg-[#2E5077]`}>
-          <img src={datePointer} className='absolute 
-          top-[-20px] left-1/2 -translate-x-1/2 w-[30px] h-[26px] -z-10'></img>
-          <div className='leading-none text-[#F6F4F0] text-[20px] h-[43px] hover:underline pt-[15px]'>2024</div>
-          <div className='leading-none text-[#F6F4F0] text-[20px] h-[43px] hover:underline pt-[10px]'>2025</div>
-        </span>
-      </button>
+          {currentYear}
+
+        </button>
+        <img className={`absolute top-[40px]
+        ${clickedDropdown === 'year' ? 'visible' : 'invisible'}
+      left-1/2 -translate-x-1/2 -z-10 w-[30px] h-[30px]`} src={datePointer} alt="" />
+        <div className={`w-full max-h-[210px] overflow-auto absolute top-[63px]
+        rounded-[3px] accountDateList flex flex-col items-center 
+        ${clickedDropdown === 'year' ? 'visible' : 'invisible'}
+        bg-[#2E5077]`}>
+          {yearList.map((year) => {
+            return (
+              <div onClick={() => {
+                handleYearListClick(year)
+              }}
+                key={year + "year"}
+                className='leading-none w-full text-center text-[#F6F4F0] pl-[10px] mb-[5px]
+           cursor-pointer text-[20px] h-[43px] hover:underline pt-[15px]'>{year}</div>
+
+            )
+          })}
+
+        </div>
+      </div>
       <div className='w-[1px] h-[50px] bg-[#CCCCCC] rounded-full'></div>
-      <button
-        onClick={() => {
-          if (clickedDropdown === 'month') {
-            setClickedDropDown(null)
-          } else {
-            setClickedDropDown('month')
-          }
-        }}
-        className={`w-[180px] h-[40px] ${clickedDropdown === 'month' ? 'bg-[#2E5077] text-[#F6F4F0]'
-          : 'text-[#979CA6] hover:bg-[#F6F4F0] hover:text-[#272628]'} flex  rounded-[8px]
-            justify-center items-center  relative`}>{currentMonth}
+      <div className='relative'>
+        <button
+          onClick={() => {
+            if (clickedDropdown === 'month') {
+              setClickedDropDown(null)
+            } else {
+              setClickedDropDown('month')
+            }
+          }}
+          className={`w-[180px] h-[40px] ${clickedDropdown === 'month' ? 'bg-[#2E5077] text-[#F6F4F0]'
+            : 'text-[#979CA6] hover:bg-[#F6F4F0] hover:text-[#272628]'} flex  rounded-[8px]
+            justify-center items-center  relative`}>
+          {currentMonth}
 
-        <span className={`flex flex-col ${clickedDropdown === 'month' ? 'visible' : 'invisible'} left-0 top-[62px] absolute  z-10 rounded-[3px]
-        w-full max-h-[210px] bg-[#2E5077]`}>
-          <img src={datePointer} className='absolute 
-          top-[-20px] left-1/2 -translate-x-1/2 w-[30px] h-[26px] -z-10'></img>
-          <div className='leading-none text-[#F6F4F0] text-[20px] h-[43px] hover:underline pt-[15px]'>October</div>
-          <div className='leading-none text-[#F6F4F0] text-[20px] h-[43px] hover:underline pt-[10px]'>November</div>
-          <div className='leading-none text-[#F6F4F0] text-[20px] h-[43px] hover:underline pt-[10px]'>December</div>
-        </span>
-      </button>
+
+        </button>
+        <img className={`absolute top-[40px]
+        ${clickedDropdown === 'month' ? 'visible' : 'invisible'}
+      left-1/2 -translate-x-1/2 -z-10 w-[30px] h-[30px]`} src={datePointer} alt="" />
+        <div className={`w-full max-h-[210px] overflow-auto absolute top-[63px]
+        rounded-[3px] accountDateList flex flex-col items-center 
+        ${clickedDropdown === 'month' ? 'visible' : 'invisible'}
+        bg-[#2E5077]`}>
+          {monthList.map((month, index) => {
+            return (
+              index !== monthList.length - 1 ? (
+                <div
+                  onClick={() => {
+                    handleMonthClick(month)
+                  }}
+                  key={month + "month"} className='leading-none
+                w-full text-center text-[#F6F4F0] pl-[10px]
+                  cursor-pointer text-[20px] h-[43px] hover:underline pt-[15px]'>{monthList}</div>
+
+              ) : (
+                <div
+                  onClick={() => {
+                    handleMonthClick(month)
+                  }}
+                  key={month + "month"} className='leading-none
+                w-full text-center text-[#F6F4F0] pl-[10px]
+              cursor-pointer  text-[20px] h-[43px] hover:underline mb-[5px] pt-[15px]'>{monthList}</div>
+
+              )
+
+            )
+          })}
+        </div>
+      </div>
       <div className='w-[1px] h-[50px]  bg-[#CCCCCC] rounded-full'></div>
-      <button
-        onClick={() => {
-          if (clickedDropdown === 'day') {
-            setClickedDropDown('null')
-          } else {
-            setClickedDropDown('day')
-          }
-        }}
-        className={`w-[100px] h-[40px] ${clickedDropdown === 'day' ? 'bg-[#2E5077] text-[#F6F4F0]'
-          : 'text-[#979CA6] hover:bg-[#F6F4F0] hover:text-[#272628]'} flex  rounded-[8px]
+      <div className='relative'>
+        <button
+          onClick={() => {
+            if (clickedDropdown === 'day') {
+              setClickedDropDown('null')
+            } else {
+              setClickedDropDown('day')
+            }
+          }}
+          className={`w-[100px] h-[40px] ${clickedDropdown === 'day' ? 'bg-[#2E5077] text-[#F6F4F0]'
+            : 'text-[#979CA6] hover:bg-[#F6F4F0] hover:text-[#272628]'} flex  rounded-[8px]
             justify-center items-center  relative`}>{currentDay}
-        <span className={`flex flex-col ${clickedDropdown === 'day' ? 'visible' : 'invisible'} left-0 top-[62px] absolute  z-10 rounded-[3px]
-        w-full max-h-[210px] bg-[#2E5077]`}>
-          <img src={datePointer} className='absolute 
-          top-[-20px] left-1/2 -translate-x-1/2 w-[30px] h-[26px] -z-10'></img>
-          <div className='leading-none text-[#F6F4F0] text-[20px] h-[43px] hover:underline pt-[15px]'>21</div>
-          <div className='leading-none text-[#F6F4F0] text-[20px] h-[43px] hover:underline pt-[10px]'>24</div>
-        </span>
 
-      </button>
+
+
+        </button>
+        <img className={`absolute top-[40px]
+        ${clickedDropdown === 'day' ? 'visible' : 'invisible'}
+      left-1/2 -translate-x-1/2 -z-10 w-[30px] h-[30px]`} src={datePointer} alt="" />
+        <div className={`w-full max-h-[210px] overflow-auto absolute top-[63px]
+        rounded-[3px] accountDateList flex flex-col items-center 
+        ${clickedDropdown === 'day' ? 'visible' : 'invisible'}
+        bg-[#2E5077]`}>
+          {dayList.map((day, index) => {
+            return (
+              index !== dayList.length - 1 ? (
+
+                <div
+                onClick={()=>{
+                  handleDayClick(day)
+                }} 
+                key={day + "day"}
+                  className='leading-none text-[#F6F4F0] pl-[10px] w-full text-center
+                 cursor-pointer text-[20px] h-[43px] hover:underline pt-[15px]'>{day}</div>
+              ) : (
+                <div key={day + "day"}
+                onClick={()=>{
+                  handleDayClick(day)
+                }}
+                  className='leading-none text-[#F6F4F0] mb-[10px] pl-[10px] 
+                w-full text-center
+                 cursor-pointer text-[20px] h-[43px] hover:underline pt-[15px]'>{day}</div >
+              )
+
+            )
+          })}
+
+        </div>
+
+      </div>
       <img className='w-[30px] ml-[5px] h-[30px]' src={calendarIcon} alt="" />
     </div>
   )

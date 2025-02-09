@@ -7,7 +7,7 @@ import DashboardLayout from './Layout/DashboardLayout';
 createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
-        let page = pages[`./Pages/${name}.jsx`];
+    let page = pages[`./Pages/${name}.jsx`];
 
     page.default.layout = name.startsWith('Dashboard/')?page => 
     <DashboardLayout type={name}>{page}</DashboardLayout>:null;

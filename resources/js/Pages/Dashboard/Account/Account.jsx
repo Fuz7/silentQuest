@@ -217,7 +217,6 @@ function ToggleButtonSection({ category, setCategory, setterCurrentDate, lifetim
   async function getLatestDateActivity() {
     const response = await axios.get('/account/latestDate');
     const { data } = response
-    console.log(data)
     const cardDataResponse = await axios.get('/account/getDataByDate', {
       params: {
         year: data.year,
@@ -272,6 +271,7 @@ function ToggleButtonSection({ category, setCategory, setterCurrentDate, lifetim
     setCurrentMonth(parsedMonthName)
     setCurrentDay(latestDay)
     const monthsNameList = getAvailableMonths.map((number) => getMonthNameFromNumber(number))
+    console.log(monthsNameList)
     setYearList(getAvailableYears)
     setMonthList(monthsNameList)
     setDayList(getAvailableDaysByMonthAndYear)
@@ -540,7 +540,7 @@ function DateButtonSection({ category, currentDate, clickedDropdown, setClickedD
                   }}
                   key={month + "month"} className='leading-none
                 w-full text-center text-[#F6F4F0] pl-[10px]
-                  cursor-pointer text-[20px] h-[43px] hover:underline pt-[15px]'>{monthList}</div>
+                  cursor-pointer text-[20px] h-[43px] hover:underline pt-[15px]'>{month}</div>
 
               ) : (
                 <div
@@ -549,7 +549,7 @@ function DateButtonSection({ category, currentDate, clickedDropdown, setClickedD
                   }}
                   key={month + "month"} className='leading-none
                 w-full text-center text-[#F6F4F0] pl-[10px]
-              cursor-pointer  text-[20px] h-[43px] hover:underline mb-[5px] pt-[15px]'>{monthList}</div>
+              cursor-pointer  text-[20px] h-[43px] hover:underline mb-[5px] pt-[15px]'>{month}</div>
 
               )
 

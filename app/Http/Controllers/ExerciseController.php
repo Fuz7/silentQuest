@@ -109,7 +109,7 @@ class ExerciseController extends Controller
 
 
     public function gotoExercisePanel(Request $request){
-
+        
         $fields = $request->validate([
         'id' => 'required|integer',
         ]);

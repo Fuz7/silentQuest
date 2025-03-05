@@ -17,6 +17,7 @@ export default {
                 'Poppins-Medium':['Poppins-Medium'],
                 'Poppins-SemiBold':['Poppins-SemiBold'],
                 'Poppins-Bold':['Poppins-Bold'],
+                'Salsa':['Salsa']
             },
             backgroundImage:{
                 loginGradient:"linear-gradient(180deg, rgba(46,80,119,1) 0%, rgba(25,42,60,1) 100%)",

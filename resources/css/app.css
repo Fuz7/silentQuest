@@ -18,6 +18,10 @@
   font-family: 'Poppins-Bold';
   src: url('@fonts/Poppins-Bold.ttf');
 }
+@font-face {
+  font-family: 'Salsa';
+  src: url('@fonts/Salsa-Regular.ttf');
+}
 
 
 
@@ -26,7 +30,10 @@
 }
 
 body{
+  position: relative;
   background-color: #F6F4F0;
+  max-height: 100vh;
+  overflow-y: scroll;
 }
 
 .circleOrigin{
@@ -75,5 +82,14 @@ body{
   border-left: 2px solid #CCCCCC ;
   border-right: 2px solid #CCCCCC;
   background-color: #4DA1A9;
-  border-radius: 70px;
+  border-radius:
+   70px;
+}
+
+.flower{
+  mask-image: url('@images/landing/heroSection/flowerMask.svg');
+  mask-repeat: no-repeat;
+  mask-position: 33% 52%;
+  mask-size: 500px 350px;
+  
 }

@@ -14,32 +14,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
-// Route::get('/login',function(){
-  //     return inertia('Auth/Login');
-  // })->name('login.show');
-  
-  
-  Route::post('/register/create',[AuthController::class, 'register'])->name('auth.register');
-  Route::post('/login',[AuthController::class, 'login'])->name('auth.login');
-  Route::post('/logout',[AuthController::class, 'logout'])->name('auth.logout');
-  
-Route::middleware(['guest'])->group(function () {
-  Route::inertia('/','Landing/Landing')->middleware('guest');
-  Route::inertia('/login','Auth/Login')->name('login');
-  Route::inertia('/register','Auth/Register')->name('register.show');
-});
+require 'auth.php';
 
 Route::middleware(['auth'])->group(function () {
   
-  Route::get('/music',function(){
-    $music = [asset('storage/music/Soft Thunder and Rain.mp3'),
-            asset('storage/music/Calm Temple Flute.mp3')];
-    return  json_encode(['da'=>$music]);
-  })  ;
-
-  Route::get('/music/mostPlayed',[MusicController::class,'getMostPlayedMusic'],);
-  Route::get('/music/randomMusic/fetch', [MusicController::class, 'getRandomMusic']);
-  Route::get('/music/randomMusic/fetchFive', [MusicController::class, 'getFiveRandomMusic']);
 
   Route::get('/dashboard', function () {
       return inertia('Dashboard/Dashboard', [
@@ -56,50 +34,69 @@ Route::middleware(['auth'])->group(function () {
   })->name('home');
  
   Route::inertia('/learn','Dashboard/Learn/Learn')->name('learn.show');
-  Route::get('/music',function(){
-      return inertia("Dashboard/Music/Music",[
-        'randomMusics'=> MusicController::getAllRandomizedMusic(),
-      ]);
-  })->name('music.show');
-  
-  Route::inertia('/meditate','Dashboard/Meditate/Meditate')->name('meditate.show');
-  Route::post('/meditate/store',[MeditationController::class, 'storeOrUpdate'])->name('meditate.store');
-  // For Exercise Creation
-  // Route::post('/meditate/store',[ExerciseController::class,'createBreathingExercise'])->name('meditate.store');
 
-  Route::post('/breathing/goto',[ExerciseController::class, 'gotoExercisePanel'])->name('breathing');
+  Route::prefix('music')->group(function(){
+    Route::get('/',function(){
+      $music = [asset('storage/music/Soft Thunder and Rain.mp3'),
+              asset('storage/music/Calm Temple Flute.mp3')];
+    })  ;
+
+    Route::get('/',function(){
+        return inertia("Dashboard/Music/Music",[
+          'randomMusics'=> MusicController::getAllRandomizedMusic(),
+        ]);
+    })->name('music.show');
+    Route::get('/mostPlayed',[MusicController::class,'getMostPlayedMusic'],);
+    Route::get('/randomMusic/fetch', [MusicController::class, 'getRandomMusic']);
+    Route::get('/randomMusic/fetchFive', [MusicController::class, 'getFiveRandomMusic']);
+  });
   Route::post('/userMusic/store',[MusicController::class, 'storeUserMusicDuration']);
 
-  Route::get('/breathing/panel', function () {
-      return inertia('Dashboard/Breathing/Breathing', [
-          'exerciseData' => Session::get('exerciseData'),
-          'auth' => Auth::user(),
-      ]);})->name('breathing.panel');
-  Route::post('/breathing/store',[ExerciseController::class, 'storeOrUpdate'])->name('breathing.store');
-  Route::get('/breathing/list',function(){
-    return inertia('Dashboard/Breathing/BreathingList',[
-  "breathingList" => ExerciseController::getBreathingList(),
-  "exp" => LevelController::getTotalExp(),
-    ]);}
-  )->name('breathing.show');
+
+  Route::prefix('meditate')->group(function(){
+  Route::inertia('/','Dashboard/Meditate/Meditate')->name('meditate.show');
+  Route::post('/store',[MeditationController::class, 'storeOrUpdate'])->name('meditate.store');
+  // For Exercise Creation
+  // Route::post('/meditate/store',[ExerciseController::class,'createBreathingExercise'])->name('meditate.store');
+  });
+
+  Route::prefix('breathing')->group(function(){
+
+    Route::post('/goto',[ExerciseController::class, 'gotoExercisePanel'])->name('breathing');
+    Route::get('/panel', function () {
+        return inertia('Dashboard/Breathing/Breathing', [
+            'exerciseData' => Session::get('exerciseData'),
+            'auth' => Auth::user(),
+        ]);})->name('breathing.panel');
+    Route::post('/store',[ExerciseController::class, 'storeOrUpdate'])->name('breathing.store');
+    Route::get('/list',function(){
+      return inertia('Dashboard/Breathing/BreathingList',[
+    "breathingList" => ExerciseController::getBreathingList(),
+    "exp" => LevelController::getTotalExp(),
+      ]);}
+    )->name('breathing.show');
+  });
     
   
-  Route::get('/account', function () {
-    return inertia('Dashboard/Account/Account', [
-      'lifetimeAuth' => Auth::user(),
-      'lifetimeMeditationTime' => MeditationController::getTotalMeditationTime(),
-      'lifetimeExercise' => ['count' => ExerciseController::getUserTotalExerciseCount(),],
-      'lifetimeLevel' => ['title'=>LevelController::getUserTitle(),
-                  'exp' =>LevelController::getTotalExp(),
-                  'expNeeded'=>LevelController::getExpNeeded()],
-      'lifetimeMusicTime' => MusicController::getTotalMusicTime(),  
-      ]);})->name('account.show');
+  Route::prefix('account')->group(function(){
+    Route::get('/', function () {
+      return inertia('Dashboard/Account/Account', [
+        'lifetimeAuth' => Auth::user(),
+        'lifetimeMeditationTime' => MeditationController::getTotalMeditationTime(),
+        'lifetimeExercise' => ['count' => ExerciseController::getUserTotalExerciseCount(),],
+        'lifetimeLevel' => ['title'=>LevelController::getUserTitle(),
+                    'exp' =>LevelController::getTotalExp(),
+                    'expNeeded'=>LevelController::getExpNeeded()],
+        'lifetimeMu icTime' => MusicController::getTotalMusicTime(),  
+        ]);})->name('account.show');
+    
+    Route::get('/latestDate',[AccountController::class, 'getLatestDateActivity']);
+    Route::get('/getDataByDate',[AccountController::class, 'getDataByDate']);
+    Route::get('/getAvailableYears',[AccountController::class, 'getAllUniqueYears']);
+    Route::get('/getMonthsByYear',[AccountController::class,'getMonthsByYear']);
+    Route::get('/getDaysByMonthAndYear',
+    [AccountController::class,'getDaysByMonthAndYear']);
   
-  Route::get('/account/latestDate',[AccountController::class, 'getLatestDateActivity']);
-  Route::get('/account/getDataByDate',[AccountController::class, 'getDataByDate']);
-  Route::get('/account/getAvailableYears',[AccountController::class, 'getAllUniqueYears']);
-  Route::get('/account/getMonthsByYear',[AccountController::class,'getMonthsByYear']);
-  Route::get('/account/getDaysByMonthAndYear',
-  [AccountController::class,'getDaysByMonthAndYear']);
+  });
 
 });

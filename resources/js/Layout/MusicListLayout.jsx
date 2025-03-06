@@ -15,7 +15,7 @@ export default function MusicList({musicIndex,setMusicIndex,musicQueue,
     getFiveRandomMusic()
   }, [])
   return (
-    <div className={`fixed right-0 top-0 w-[660px] h-[900px] bg-[#F6F4F0]
+    <div className={`fixed   right-0 top-0 w-[660px] h-[900px] bg-[#F6F4F0]
     drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)] pt-[300px] pl-[50px] 
     flex flex-col gap-[30px] ${type ==="Dashboard/Music/Music"&&'hidden'}`}>
       {musicList.map((music, index) => {

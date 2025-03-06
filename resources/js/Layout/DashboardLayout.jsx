@@ -37,11 +37,16 @@ export default function DashboardLayout({ children, type }) {
     }, [stopWatch.totalSeconds])
 
     useEffect(() => {
-        fetch("/music/mostPlayed")
-            .then((response) => response.json())
-            .then((data) => {
-                setMusicQueue((queue) => [...queue, data["mostPlayed"]]);
-            });
+        async function fetchMostPlayedMusic() {
+            try {
+                const response = await axios.get("/music/mostPlayed");
+                setMusicQueue((queue) => [...queue, response.data.mostPlayed]);
+            } catch (error) {
+                console.error("Failed to fetch most played music:", error);
+            }
+        }
+
+        fetchMostPlayedMusic();
     }, []);
 
     async function saveUserMusicTime() {

@@ -3,7 +3,6 @@ import musicPlaylistPlay from "@images/dashboard/layout/music/musicPlaylistPlay.
 export default function Music({ randomMusics,musicIndex,setMusicIndex,musicQueue,
   setMusicQueue,setIsPaused,audioRef,saveUserMusicTime
  }) {
-  console.log(randomMusics)
   return (
     <div className="flex flex-col gap-[40px] mt-[60px]">
       <h2 className="ml-[60px] text-[#2E5077] font-Poppins-Medium text-[32px]

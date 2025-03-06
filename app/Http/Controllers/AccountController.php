@@ -2,19 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exercise;
-use App\Models\Level;
-use App\Models\Meditation;
-use App\Models\UserExercise;
-use App\Models\UserMusic;
 use App\Repository\AccountRepository;
-use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
-use function PHPUnit\Framework\isEmpty;
 
 class AccountController extends Controller{
 

@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exercise;
-use App\Models\Level;
-use App\Models\UserExercise;
 use App\Repository\LevelRespository;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LevelController extends Controller

@@ -2,15 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exercise;
-use App\Models\Meditation;
-use App\Models\UserExercise;
 use App\Repository\ExerciseRepository;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {

@@ -87,7 +87,7 @@ Route::middleware(['auth'])->group(function () {
         'lifetimeLevel' => ['title'=>LevelController::getUserTitle(),
                     'exp' =>LevelController::getTotalExp(),
                     'expNeeded'=>LevelController::getExpNeeded()],
-        'lifetimeMu icTime' => MusicController::getTotalMusicTime(),  
+        'lifetimeMusicTime' => MusicController::getTotalMusicTime(),  
         ]);})->name('account.show');
     
     Route::get('/latestDate',[AccountController::class, 'getLatestDateActivity']);

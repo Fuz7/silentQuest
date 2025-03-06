@@ -64,7 +64,7 @@ function MusicCard({ music,musicIndex,setMusicIndex,
            bg-[#0000008a] flex justify-center items-center">
             <img src={musicListLayoutPlay} alt="" />
         </span>
-        <img className="w-full h-full object-cover" src={"http://127.0.0.1:8000/"+image} alt="" />
+        <img className="w-full h-full object-cover" src={"http://localhost/"+image} alt="" />
       </button>
       <p className="font-Poppins-Regular text-[25px] text-[#272628] leading-none mt-[5px]">{name}</p>
     </div>

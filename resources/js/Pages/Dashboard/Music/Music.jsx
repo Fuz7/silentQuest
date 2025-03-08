@@ -50,6 +50,7 @@ function MusicCard({ music, musicIndex, setMusicIndex, musicQueue,
     }
   }
   const { image, name, id } = music
+  
   return (
     <>
       <div className="flex gap-[42px]">

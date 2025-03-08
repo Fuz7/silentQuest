@@ -109,6 +109,7 @@ export default function MusicPlayer({ musicQueue, setMusicQueue, saveUserMusicTi
     }
 
   }
+  const apiUrl = import.meta.env.VITE_APP_URL;
 
   return (<div className={`fixed right-0 top-[100px] w-[500px] h-[150px]
     transition-transform ease-out duration-500 ${!isExpanded && 'translate-x-[310px]'}
@@ -123,7 +124,7 @@ export default function MusicPlayer({ musicQueue, setMusicQueue, saveUserMusicTi
       }}
       className={`w-[125px] h-[100px] rounded-[10px] overflow-hidden 
       ${!isAnimating ? 'musicImage' : 'cursor-auto'} relative`}>
-      <img src={musicQueue.length > 0 ? "http://localhost/" + musicQueue[musicIndex].image : null} className="w-[125px] h-[100px] object-cover" alt="" />
+      <img src={musicQueue.length > 0 ? apiUrl + musicQueue[musicIndex].image : null} className="w-[125px] h-[100px] object-cover" alt="" />
       <span className="absolute w-[125px] h-[100px] bg-[#0000008a] z-10 invisible
       top-0 left-0 flex justify-center items-center">
         <img src={isExpanded ? expandIcon : collapseIcon} alt="" />
@@ -149,7 +150,7 @@ export default function MusicPlayer({ musicQueue, setMusicQueue, saveUserMusicTi
         </button>
       </div>
     </div>
-    <audio ref={audioRef} loop src={musicQueue.length > 0 ? ("http://localhost/" + musicQueue[musicIndex].audio) : undefined} ></audio>
+    <audio ref={audioRef} loop src={musicQueue.length > 0 ? (apiUrl + musicQueue[musicIndex].audio) : undefined} ></audio>
 
   </div>
   )

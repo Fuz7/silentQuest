@@ -34,13 +34,13 @@ RUN composer install --optimize-autoloader
 
 # Install dependencies and build frontend
 RUN npm install
-RUN npm run build
 
+RUN npm run build
 
 # Expose ports
 EXPOSE 8000 5173
 
 # Start both Laravel and React
 
-CMD ["sh", "-c", "php artisan migrate --seed && php artisan storage:link && php-fpm & npm run dev "]
+CMD ["sh", "-c", "php artisan migrate --seed && php artisan storage:link && php-fpm"]
 

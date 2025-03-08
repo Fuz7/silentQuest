@@ -56,6 +56,8 @@ function MusicCard({ music,musicIndex,setMusicIndex,
 
     }
   }
+const apiUrl = import.meta.env.VITE_APP_URL;
+
   return (
     <div className="flex gap-[50px]">
       <button onClick={handleClick} className="w-[100px] h-[80px] musicList relative bg-slate-200 rounded-[10px]
@@ -64,7 +66,7 @@ function MusicCard({ music,musicIndex,setMusicIndex,
            bg-[#0000008a] flex justify-center items-center">
             <img src={musicListLayoutPlay} alt="" />
         </span>
-        <img className="w-full h-full object-cover" src={"http://localhost/"+image} alt="" />
+        <img className="w-full h-full object-cover" src={apiUrl+image} alt="" />
       </button>
       <p className="font-Poppins-Regular text-[25px] text-[#272628] leading-none mt-[5px]">{name}</p>
     </div>

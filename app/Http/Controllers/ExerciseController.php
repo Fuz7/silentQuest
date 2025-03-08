@@ -16,10 +16,6 @@ class ExerciseController extends Controller
     }
 
     //
-    public function createBreathingExercise(Request $request)
-    {
-        $this->exerciseRepository->createBreathingExercise();
-    }
 
     public static function getBreathingList()
     {

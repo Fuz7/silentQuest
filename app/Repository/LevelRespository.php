@@ -11,46 +11,6 @@ use Carbon\Carbon;
 class LevelRespository
 {
 
-    public static function createLevels()
-    {
-        Level::create([
-            'title' => 'Calm Newbie',
-            'exp' => '0'
-        ]);
-        Level::create([
-            'title' => 'Relaxation Explorer',
-            'exp' => '200'
-        ]);
-        Level::create([
-            'title' => 'Breath Balancer',
-            'exp' => '600'
-        ]);
-        Level::create([
-            'title' => 'Mindful Seeker',
-            'exp' => '1200'
-        ]);
-        Level::create([
-            'title' => 'Peace Practitioner',
-            'exp' => '2000'
-        ]);
-        Level::create([
-            'title' => 'Harmony Keeper',
-            'exp' => '3000'
-        ]);
-        Level::create([
-            'title' => 'Tranquility Guardian',
-            'exp' => '4500'
-        ]);
-        Level::create([
-            'title' => 'Serenity Sage',
-            'exp' => '6000'
-        ]);
-        Level::create([
-            'title' => 'Zen Master',
-            'exp' => '8000'
-        ]);
-    }
-
 
     public static function getTotalExp(int $user_id)
     {

@@ -7,10 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LevelController extends Controller
 {
-    public static function createLevels()
-    {
-        LevelRespository::createLevels();
-    }
 
     public static function getTotalExp()
     {

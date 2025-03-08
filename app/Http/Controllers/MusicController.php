@@ -19,10 +19,6 @@ class MusicController extends Controller
         $this->musicRepository = new MusicRepository;
     }
 
-    public static function createMusicData()
-    {
-        MusicRepository::createMusicData();
-    }
 
     public function getMostPlayedMusic(Request $request)
     {

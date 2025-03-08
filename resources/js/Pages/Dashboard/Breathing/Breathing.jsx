@@ -179,7 +179,7 @@ export default function Breathing({ exerciseData}) {
         setCycle(cycle + 1)
         triggerAnimation(0)
         setAnimationStarted(true)
-      } else if (!animationStarted && cycle === 1) {
+      } else if (!animationStarted && cycle === 2) {
         animate(".circleOrigin", {
           scale: 1,
           translateX: ['-50%', '-50%'], translateY: ['-50%', '-50%']

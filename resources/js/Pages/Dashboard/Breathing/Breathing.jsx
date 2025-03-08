@@ -175,7 +175,7 @@ export default function Breathing({ exerciseData}) {
           }
         }
       }
-      if (!animationStarted && cycle < 1) {
+      if (!animationStarted && cycle < 2) {
         setCycle(cycle + 1)
         triggerAnimation(0)
         setAnimationStarted(true)
@@ -231,7 +231,10 @@ export default function Breathing({ exerciseData}) {
           </Link>
           <div className="flex flex-col gap-[10px]">
             <h3 className="font-Poppins-Medium text-[32px] leading-none text-[#272628]">{capitalize(exerciseData.category)}</h3>
-            <p className="font-Poppins-Regular text-[18px] leading-none text-[#979CA6] mt-[10px]">{exerciseData.cycle} cycles per session</p>
+            <p className="font-Poppins-Regular text-[18px] leading-none text-[#979CA6] mt-[10px]">
+              {/* {exerciseData.cycle}  */}
+              2 cycles per session
+              </p>
             <p className="font-Poppins-Regular text-[18px] leading-tight text-[#979CA6] max-w-[247px]">{exerciseData.description}</p>
           </div>
         </div>

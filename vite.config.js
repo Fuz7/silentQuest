@@ -17,5 +17,13 @@ export default defineConfig({
             '@fonts': '/resources/assets/fonts',
             '@vendor': '/vendor'
         }
+    },
+    server: {
+        host: '0.0.0.0',  // Allows connections from Docker network
+        port: 5173,       // Matches Docker exposed port
+        strictPort: true, // Ensures it uses the assigned port
+        hmr: {
+            clientPort: 5173, // Hot Module Reloading uses correct port
+        },
     }
 });

@@ -14,61 +14,68 @@ class MusicController extends Controller
 
     protected $musicRepository;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->musicRepository = new MusicRepository;
     }
 
-    public static function createMusicData(){
-       MusicRepository::createMusicData(); 
+    public static function createMusicData()
+    {
+        MusicRepository::createMusicData();
     }
 
-    public function getMostPlayedMusic(Request $request){
+    public function getMostPlayedMusic(Request $request)
+    {
         $user_id = Auth::user()->id;
         $response = $this->musicRepository->getMostPlayedMusic($user_id);
         return $response;
     }
 
-    public function getRandomMusic(Request $request){
+    public function getRandomMusic(Request $request)
+    {
         $idArray = $request->idArray;
         $response = $this->musicRepository->getRandomMusic($idArray);
         return $response;
     }
 
-    public function getFiveRandomMusic(Request $request){
-        
+    public function getFiveRandomMusic(Request $request)
+    {
+
         $response = $this->musicRepository->getFiveRandomMusic();
         return $response;
-    }    
-
-    public static function getAllRandomizedMusic(){
-        $response = MusicRepository::getAllRandomizedMusic();
-        return($response);
     }
 
-    public function storeUserMusicDuration(Request $request){
-   
-        $user_id = Auth::user()->id;    
+    public static function getAllRandomizedMusic()
+    {
+        $response = MusicRepository::getAllRandomizedMusic();
+        return ($response);
+    }
+
+    public function storeUserMusicDuration(Request $request)
+    {
+
+        $user_id = Auth::user()->id;
         $musicId = $request['musicId'];
         $duration = $request['duration'];
 
         $response = $this->musicRepository
-        ->storeUserMusicDuration($user_id,$musicId,$duration);
+            ->storeUserMusicDuration($user_id, $musicId, $duration);
         return $response;
     }
 
-    public static function getTotalMusicTime(){
+    public static function getTotalMusicTime()
+    {
         $user_id = Auth::user()->id;
 
         $response = MusicRepository::getTotalMusicTime($user_id);
         return $response;
     }
-    
 
-    public static function getTotalMusicTimeToday(){
+
+    public static function getTotalMusicTimeToday()
+    {
         $user_id = Auth::user()->id;
         $response = MusicRepository::getTotalMusicTimeToday($user_id);
         return $response;
     }
 }
-
-

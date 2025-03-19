@@ -9,7 +9,7 @@ services:
       - /var/www/vendor    # Prevents overwriting vendor directory
       - /var/www/node_modules  # Prevents overwriting node_modules
 
-      - ./storage/app/public/:/var/www/storage/app/public/
+      - ./storage/app/public/:/ var/www/storage/app/public/
 
     ports:
       - "5173:5173"  # Vite (React frontend)
